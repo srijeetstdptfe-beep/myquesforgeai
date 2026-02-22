@@ -10,107 +10,68 @@ import { FileText, Lock, Mail, Loader2, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
 export default function LoginPage() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
+    const handleLoginClick = () => {
+        if (typeof window !== 'undefined' && (window as any).netlifyIdentity) {
+            (window as any).netlifyIdentity.open("login");
 
-        const loadingToast = toast.loading("Accessing dashboard...");
-
-        try {
-            // In the Git-based architecture, we simplify login
-            // The Netlify Identity Widget handles the actual auth
-            toast.success("Welcome back!", { id: loadingToast });
-            router.push("/dashboard");
-        } catch (error) {
-            toast.error("An error occurred during login", { id: loadingToast });
-        } finally {
-            setIsLoading(false);
+            // Listen for login and redirect to dashboard
+            (window as any).netlifyIdentity.on("login", () => {
+                router.push("/dashboard");
+                (window as any).netlifyIdentity.close();
+            });
         }
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-white p-6 selection:bg-black selection:text-white">
-            <Link href="/" className="flex items-center gap-3 mb-12 group transition-all">
-                <div className="w-12 h-12 rounded-lg bg-black flex items-center justify-center group-hover:bg-slate-900">
-                    <FileText className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                    <span className="text-2xl font-black text-black tracking-tighter uppercase leading-none block">PaperCraft</span>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Institutional Access</span>
-                </div>
-            </Link>
-
-            <Card className="w-full max-w-md shadow-2xl border-2 border-black rounded-none bg-white">
-                <CardHeader className="p-10 pb-6 text-center">
-                    <CardTitle className="text-4xl font-black text-black uppercase tracking-tighter mb-2">Login.</CardTitle>
-                    <CardDescription className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                        Enter your credentials to continue
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 selection:bg-black selection:text-white">
+            <Card className="max-w-md w-full border-2 border-black rounded-none shadow-[20px_20px_0px_0px_rgba(0,0,0,0.05)] bg-white overflow-hidden">
+                <CardHeader className="p-10 pb-0 text-center">
+                    <div className="flex justify-center mb-8">
+                        <div className="w-16 h-16 rounded-xl bg-black flex items-center justify-center rotate-[-5deg]">
+                            <FileText className="h-8 w-8 text-white" />
+                        </div>
+                    </div>
+                    <CardTitle className="text-4xl font-black text-black tracking-tighter uppercase mb-2">
+                        Member Portal
+                    </CardTitle>
+                    <CardDescription className="font-medium text-slate-500">
+                        Access the institutional assessment suite
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="p-10 pt-0">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-black">Email Address</label>
-                            <div className="relative">
-                                <Mail className="absolute left-4 top-3.5 h-4 w-4 text-slate-400" />
-                                <Input
-                                    type="email"
-                                    placeholder="professor@university.edu"
-                                    className="pl-12 h-12 border-black/10 rounded-none focus-visible:ring-black font-medium"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black uppercase tracking-widest text-black">Password</label>
-                            <div className="relative">
-                                <Lock className="absolute left-4 top-3.5 h-4 w-4 text-slate-400" />
-                                <Input
-                                    type="password"
-                                    placeholder="••••••••"
-                                    className="pl-12 h-12 border-black/10 rounded-none focus-visible:ring-black font-medium"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                />
-                            </div>
-                        </div>
-                        <Button type="submit" className="w-full bg-black hover:bg-slate-900 h-14 rounded-none font-black uppercase tracking-widest text-xs transition-all shadow-xl shadow-black/10" disabled={isLoading}>
-                            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Authorize"}
-                            {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
+                <CardContent className="p-10 pt-12">
+                    <div className="space-y-6">
+                        <Button
+                            onClick={handleLoginClick}
+                            className="w-full bg-black hover:bg-slate-900 border-2 border-black text-white h-14 rounded-none font-black uppercase tracking-widest text-sm transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,0.1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+                            disabled={isLoading}
+                        >
+                            Open Access Terminal
                         </Button>
 
-                        {/* Or Divider */}
-                        <div className="relative">
+                        <div className="relative py-4">
                             <div className="absolute inset-0 flex items-center">
-                                <div className="w-full border-t-2 border-black/10"></div>
+                                <div className="w-full border-t border-black/5" />
                             </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-white px-4 text-slate-400 font-black tracking-widest">Or</span>
+                            <div className="relative flex justify-center text-[10px] uppercase font-black tracking-widest bg-white px-4 text-slate-300">
+                                Institutional Verification
                             </div>
                         </div>
 
-                        {/* Links removed for migration */}
-                    </form>
+                        <p className="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest leading-relaxed">
+                            Access is strictly restricted to <br /> approved educational partners
+                        </p>
+                    </div>
                 </CardContent>
                 <CardFooter className="p-10 pt-0 flex flex-col space-y-6">
                     <div className="w-full h-px bg-black/5" />
-                    <div className="text-[10px] font-black uppercase tracking-widest text-center text-slate-400">
-                        Institutional Access Enabled
-                    </div>
+                    <Link href="/contact" className="text-[10px] font-black uppercase tracking-widest text-center text-slate-400 hover:text-black transition-colors">
+                        Request Institutional Credentials →
+                    </Link>
                 </CardFooter>
             </Card>
-
-            <p className="mt-12 text-[10px] font-bold text-slate-400 text-center max-w-xs uppercase tracking-widest leading-relaxed">
-                Secured by RSA-4096. <br /> Private Educational Infrastructure.
-            </p>
         </div>
     );
 }

@@ -1,6 +1,7 @@
 backend:
   name: git-gateway
-  branch: main # Ensure this matches your default branch
+  branch: main
+  site_domain: dazzling-rugelach-1149d9.netlify.app
 
 media_folder: public/images/uploads
 public_folder: /images/uploads

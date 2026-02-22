@@ -48,16 +48,51 @@ import { LimitReachedModal } from '@/components/dashboard/LimitReachedModal';
 
 export function Dashboard() {
   const router = useRouter();
-  // Mock session and signOut for Netlify Identity flow
-  const session = { user: { name: 'User', plan: 'FREE' } } as any;
+  const [user, setUser] = useState<any>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
+
+  useEffect(() => {
+    const initAuth = () => {
+      if (typeof window !== 'undefined' && (window as any).netlifyIdentity) {
+        const currentUser = (window as any).netlifyIdentity.currentUser();
+        if (!currentUser) {
+          router.push("/login");
+        } else {
+          setUser(currentUser);
+        }
+        setIsInitializing(false);
+      }
+    };
+
+    initAuth();
+
+    // Listen for logout
+    if (typeof window !== 'undefined' && (window as any).netlifyIdentity) {
+      (window as any).netlifyIdentity.on("logout", () => router.push("/login"));
+    }
+  }, [router]);
+
   const signOut = () => {
     if (typeof window !== 'undefined' && (window as any).netlifyIdentity) {
       (window as any).netlifyIdentity.logout();
     }
   };
+
   const { papers, createPaper, deletePaper, duplicatePaper, loadPaper } = usePaperStore();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [paperToDelete, setPaperToDelete] = useState<string | null>(null);
+
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 animate-pulse">
+          Initializing Secure Session...
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   // Database papers state
   const [dbPapers, setDbPapers] = useState<any[]>([]);
@@ -112,8 +147,7 @@ export function Dashboard() {
   };
 
   const handleDuplicatePaper = (paperId: string) => {
-    const user = session?.user as any;
-    const userPlan = user?.plan || 'FREE';
+    const userPlan = user?.app_metadata?.plan || 'FREE';
     const totalPapers = papers.length + dbPapers.length;
 
     // Check limit before duplicating
@@ -174,11 +208,11 @@ export function Dashboard() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-slate-50 rounded-lg">
                   <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-black text-xs">
-                    {session?.user?.name?.[0]?.toUpperCase() || "U"}
+                    {user?.user_metadata?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
                   </div>
                   <div className="text-left hidden sm:block">
-                    <p className="text-xs font-bold leading-none text-black">{session?.user?.name}</p>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">{(session?.user as any)?.plan || 'FREE'}</p>
+                    <p className="text-xs font-bold leading-none text-black">{user?.user_metadata?.full_name || user?.email}</p>
+                    <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">{user?.app_metadata?.plan || 'FREE'}</p>
                   </div>
                 </Button>
               </DropdownMenuTrigger>

@@ -20,6 +20,8 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -49,6 +51,22 @@ const floatingElement = (delay: number) => ({
 });
 
 export default function LandingPage() {
+  const router = useRouter();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && (window as any).netlifyIdentity) {
+      // Sync initial state
+      setUser((window as any).netlifyIdentity.currentUser());
+
+      // Listen for events
+      (window as any).netlifyIdentity.on("login", (user: any) => {
+        setUser(user);
+        (window as any).netlifyIdentity.close();
+      });
+      (window as any).netlifyIdentity.on("logout", () => setUser(null));
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-white overflow-x-hidden selection:bg-black selection:text-white">
       {/* Navbar */}
@@ -67,10 +85,23 @@ export default function LandingPage() {
         </div>
 
         <div className="flex items-center gap-4">
-          <Link href="/login" className="text-sm font-bold text-black hover:opacity-70 transition-opacity">Login</Link>
-          <Button asChild className="bg-black hover:bg-slate-800 text-white rounded-md px-6 font-bold">
-            <Link href="/register">Join Platform</Link>
-          </Button>
+          <button
+            onClick={() => {
+              if (user) {
+                router.push("/dashboard");
+              } else if (typeof window !== 'undefined' && (window as any).netlifyIdentity) {
+                (window as any).netlifyIdentity.open("login");
+              }
+            }}
+            className="text-sm font-bold text-black hover:opacity-70 transition-opacity"
+          >
+            {user ? 'Dashboard' : 'Log In'}
+          </button>
+          {!user && (
+            <Button asChild className="bg-black hover:bg-slate-800 text-white rounded-md px-6 font-bold">
+              <Link href="/contact">Enquire to Join</Link>
+            </Button>
+          )}
         </div>
       </nav>
 
@@ -122,8 +153,8 @@ export default function LandingPage() {
             className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-24"
           >
             <Button asChild size="lg" className="h-16 px-10 text-lg bg-black hover:bg-slate-900 text-white rounded-none border border-black group transition-all">
-              <Link href="/register" className="flex items-center gap-3">
-                Get Started Free
+              <Link href="/contact" className="flex items-center gap-3">
+                Request Access
                 <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
@@ -198,8 +229,8 @@ export default function LandingPage() {
               <h2 className="text-4xl md:text-6xl font-black mb-8 leading-[0.9] tracking-tighter uppercase">Academic <br /> Standards.</h2>
               <p className="text-xl text-slate-400 font-medium">Built with the rigor required for formal examinations. No compromises on quality or structure.</p>
             </div>
-            <Link href="/register" className="text-white text-sm font-black uppercase tracking-widest flex items-center gap-2 hover:opacity-70 transition-opacity">
-              Start Building Free <ArrowRight className="h-4 w-4" />
+            <Link href="/contact" className="text-white text-sm font-black uppercase tracking-widest flex items-center gap-2 hover:opacity-70 transition-opacity">
+              Request Platform Access <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
@@ -272,7 +303,7 @@ export default function LandingPage() {
           </p>
           <div className="relative z-10">
             <Button asChild size="lg" className="h-16 px-12 text-xl bg-black text-white hover:bg-slate-900 rounded-none font-bold group-hover:bg-white group-hover:text-black transition-all">
-              <Link href="/register">Join the Platform</Link>
+              <Link href="/contact">Inquire to Open Account</Link>
             </Button>
           </div>
         </motion.div>
