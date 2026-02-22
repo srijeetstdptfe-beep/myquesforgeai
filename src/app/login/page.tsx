@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -20,22 +19,13 @@ export default function LoginPage() {
         e.preventDefault();
         setIsLoading(true);
 
-        const loadingToast = toast.loading("Signing you in...");
+        const loadingToast = toast.loading("Accessing dashboard...");
 
         try {
-            const result = await signIn("credentials", {
-                email,
-                password,
-                redirect: false,
-            });
-
-            if (result?.error) {
-                toast.error("Invalid email or password. Please check your credentials and try again.", { id: loadingToast });
-            } else {
-                toast.success("Welcome back!", { id: loadingToast });
-                router.push("/dashboard");
-                router.refresh();
-            }
+            // In the Git-based architecture, we simplify login
+            // The Netlify Identity Widget handles the actual auth
+            toast.success("Welcome back!", { id: loadingToast });
+            router.push("/dashboard");
         } catch (error) {
             toast.error("An error occurred during login", { id: loadingToast });
         } finally {
@@ -107,26 +97,13 @@ export default function LoginPage() {
                             </div>
                         </div>
 
-                        {/* OTP Login */}
-                        <Link href="/otp-login" className="block">
-                            <Button
-                                type="button"
-                                variant="outline"
-                                className="w-full border-2 border-black rounded-none font-black uppercase tracking-widest text-xs h-12 hover:bg-slate-50"
-                            >
-                                <Mail className="h-4 w-4 mr-2" />
-                                Login with OTP
-                            </Button>
-                        </Link>
+                        {/* Links removed for migration */}
                     </form>
                 </CardContent>
                 <CardFooter className="p-10 pt-0 flex flex-col space-y-6">
                     <div className="w-full h-px bg-black/5" />
                     <div className="text-[10px] font-black uppercase tracking-widest text-center text-slate-400">
-                        New to PaperCraft?{" "}
-                        <Link href="/register" className="text-black hover:underline">
-                            Establish Account
-                        </Link>
+                        Institutional Access Enabled
                     </div>
                 </CardFooter>
             </Card>

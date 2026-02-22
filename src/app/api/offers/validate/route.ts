@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getCollectionData } from "@/lib/content";
 
 export async function POST(req: Request) {
     try {
@@ -10,9 +10,8 @@ export async function POST(req: Request) {
         }
 
         // Find the offer
-        const offer = await prisma.offer.findUnique({
-            where: { code: code.toUpperCase() }
-        });
+        const offers = getCollectionData<any>('offers');
+        const offer = offers.find(o => o.code === code.toUpperCase());
 
         if (!offer) {
             return NextResponse.json({ error: "Invalid offer code" }, { status: 404 });

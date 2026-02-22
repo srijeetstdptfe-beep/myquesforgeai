@@ -1,10 +1,5 @@
-
 import { Groq } from 'groq-sdk';
 import { NextResponse } from 'next/server';
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { canUseAI, getPlanLimits } from "@/lib/pricing";
 
 export async function POST(req: Request) {
     const groq = new Groq({
@@ -17,50 +12,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Context text is required' }, { status: 400 });
         }
 
-        // Check Permissions
-        const session = await getServerSession(authOptions);
-        if (!session || !session.user) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        const user = await prisma.user.findUnique({ where: { email: session.user.email! } });
-        if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
-
-        // Cast user to any for new fields
-        const userForCheck = { ...user, plan: user.plan } as any;
-
-        if (!canUseAI(userForCheck, 'QUESTION')) {
-            return NextResponse.json({ error: 'Upgrade plan to use AI generation' }, { status: 403 });
-        }
-
-        // Usage & Limits Logic
-        const limits = getPlanLimits(user.plan);
-        const usage = (user as any).aiQuestionUsage || 0;
-        const limit = limits.aiQuestions;
-
-        if (user.plan === 'PAYG') {
-            // PAYG: Use extra credits (added manually by admin)
-            if ((user as any).extraAiQuestions > 0) {
-                await prisma.user.update({
-                    where: { id: user.id },
-                    data: {
-                        extraAiQuestions: { decrement: 1 },
-                        aiQuestionUsage: { increment: 1 }
-                    }
-                });
-            } else {
-                return NextResponse.json({ error: 'No AI credits available. Contact support to purchase more.' }, { status: 403 });
-            }
-        } else {
-            // Subscription / Free Logic
-            if (usage < limit) {
-                await prisma.user.update({ where: { id: user.id }, data: { aiQuestionUsage: { increment: 1 } } });
-            } else if ((user as any).extraAiQuestions > 0) {
-                await prisma.user.update({ where: { id: user.id }, data: { extraAiQuestions: { decrement: 1 } } });
-            } else {
-                return NextResponse.json({ error: 'Limit reached. Upgrade or contact support for top-up.' }, { status: 403 });
-            }
-        }
+        // Permissions and Limits removed for Git-based architecture
 
 
         const prompt = `

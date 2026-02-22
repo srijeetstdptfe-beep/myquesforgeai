@@ -1,4 +1,17 @@
-import { Session } from "next-auth";
+// import { Session } from "next-auth";
+
+interface UserStub {
+    id: string;
+    email: string;
+    name?: string;
+    plan: string;
+    manualPaperCount: number;
+    aiFullPaperUsage: number;
+    aiQuestionUsage: number;
+    extraAiFullPapers: number;
+    extraAiQuestions: number;
+    extraExports: number;
+}
 
 export const PLAN_LIMITS = {
     FREE: {
@@ -47,7 +60,7 @@ export function getPlanLimits(plan: string) {
     return PLAN_LIMITS[normalizedPlan as PlanType] || PLAN_LIMITS.FREE;
 }
 
-export function canCreateManualPaper(user: Session["user"] | null) {
+export function canCreateManualPaper(user: UserStub | null) {
     if (!user) return false;
     const limits = getPlanLimits(user.plan);
 
@@ -59,7 +72,7 @@ export function canCreateManualPaper(user: Session["user"] | null) {
     return user.manualPaperCount < limits.manualPapers;
 }
 
-export function getAvailableAICredits(user: Session["user"] | null, type: 'FULL_PAPER' | 'QUESTION') {
+export function getAvailableAICredits(user: UserStub | null, type: 'FULL_PAPER' | 'QUESTION') {
     if (!user) return 0;
     const limits = getPlanLimits(user.plan);
 
@@ -72,7 +85,7 @@ export function getAvailableAICredits(user: Session["user"] | null, type: 'FULL_
     }
 }
 
-export function canUseAI(user: Session["user"] | null, type: 'FULL_PAPER' | 'QUESTION' = 'FULL_PAPER') {
+export function canUseAI(user: UserStub | null, type: 'FULL_PAPER' | 'QUESTION' = 'FULL_PAPER') {
     if (!user) return false;
     const limits = getPlanLimits(user.plan);
     if (!limits.canUseAI && user.plan !== 'PAYG') return false; // PAYG can always use if they have credits? Or logic handles it?

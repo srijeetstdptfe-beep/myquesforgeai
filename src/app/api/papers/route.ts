@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import { getCollectionData } from '@/lib/content';
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
 
 export async function POST(req: Request) {
     // In DecapCMS/Git-based architecture, user-generated content (like saving a paper) 

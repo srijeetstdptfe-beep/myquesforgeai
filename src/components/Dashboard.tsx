@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-// import { useSession, signOut } from 'next-auth/react';
 import { usePaperStore } from '@/lib/store';
 import { QuestionPaper, calculateTotalMarks } from '@/lib/types';
 import { Button } from '@/components/ui/button';
