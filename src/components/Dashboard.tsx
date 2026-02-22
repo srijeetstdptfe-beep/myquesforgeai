@@ -81,35 +81,10 @@ export function Dashboard() {
   const { papers, createPaper, deletePaper, duplicatePaper, loadPaper } = usePaperStore();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [paperToDelete, setPaperToDelete] = useState<string | null>(null);
-
-  if (isInitializing) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 animate-pulse">
-          Initializing Secure Session...
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) return null;
-
-  // Database papers state
   const [dbPapers, setDbPapers] = useState<any[]>([]);
   const [isLoadingDb, setIsLoadingDb] = useState(false);
   const [activeTab, setActiveTab] = useState('local');
   const [isPurchasingExtra, setIsPurchasingExtra] = useState(false);
-
-  const handleLaunchDbPaper = (paperRecord: any) => {
-    const paperData = paperRecord.data as QuestionPaper;
-    usePaperStore.setState((state) => ({
-      papers: state.papers.find(p => p.id === paperData.id)
-        ? state.papers
-        : [...state.papers, paperData],
-      currentPaper: paperData
-    }));
-    router.push(`/builder/${paperData.id}`);
-  };
 
   const fetchDbPapers = async () => {
     setIsLoadingDb(true);
@@ -125,6 +100,33 @@ export function Dashboard() {
     }
   };
 
+  useEffect(() => {
+    fetchDbPapers();
+  }, []);
+
+  if (isInitializing) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 animate-pulse">
+          Initializing Secure Session...
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  const handleLaunchDbPaper = (paperRecord: any) => {
+    const paperData = paperRecord.data as QuestionPaper;
+    usePaperStore.setState((state) => ({
+      papers: state.papers.find(p => p.id === paperData.id)
+        ? state.papers
+        : [...state.papers, paperData],
+      currentPaper: paperData
+    }));
+    router.push(`/builder/${paperData.id}`);
+  };
+
   const handleCreatePaper = (aiAssisted: boolean = false) => {
     // Limits are now removed or managed via DecapCMS
     const paperId = createPaper(aiAssisted);
@@ -134,12 +136,6 @@ export function Dashboard() {
       router.push(`/builder/${paperId}`);
     }
   };
-
-  // User session sync is now handled by Netlify Identity directly
-
-  useEffect(() => {
-    fetchDbPapers();
-  }, []);
 
   const handleEditPaper = (paper: QuestionPaper) => {
     loadPaper(paper.id);
