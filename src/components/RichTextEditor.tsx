@@ -32,7 +32,7 @@ export function RichTextEditor({
         blockquote: false,
       }),
       Placeholder.configure({ placeholder }),
-      Underline,
+      Underline.configure(),
     ],
     content,
     immediatelyRender: false,

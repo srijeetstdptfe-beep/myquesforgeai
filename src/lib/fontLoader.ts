@@ -7,27 +7,27 @@ import { Language } from './types';
 // These are the regular weight Noto Sans fonts for each script family
 const FONT_URLS: Record<string, string> = {
     // Devanagari (Hindi, Marathi, Sanskrit, Nepali, Konkani, Dogri, Maithili, Bodo, Kashmiri, Sindhi)
-    devanagari: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-devanagari@5.1.1/files/noto-sans-devanagari-latin-400-normal.woff',
+    devanagari: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansDevanagari/NotoSansDevanagari-Regular.ttf',
     // Tamil
-    tamil: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-tamil@5.1.1/files/noto-sans-tamil-latin-400-normal.woff',
+    tamil: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansTamil/NotoSansTamil-Regular.ttf',
     // Telugu  
-    telugu: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-telugu@5.1.1/files/noto-sans-telugu-latin-400-normal.woff',
+    telugu: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansTelugu/NotoSansTelugu-Regular.ttf',
     // Bengali (Bengali, Assamese, Manipuri)
-    bengali: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-bengali@5.1.1/files/noto-sans-bengali-latin-400-normal.woff',
+    bengali: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansBengali/NotoSansBengali-Regular.ttf',
     // Gujarati
-    gujarati: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-gujarati@5.1.1/files/noto-sans-gujarati-latin-400-normal.woff',
+    gujarati: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansGujarati/NotoSansGujarati-Regular.ttf',
     // Kannada
-    kannada: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-kannada@5.1.1/files/noto-sans-kannada-latin-400-normal.woff',
+    kannada: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansKannada/NotoSansKannada-Regular.ttf',
     // Malayalam
-    malayalam: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-malayalam@5.1.1/files/noto-sans-malayalam-latin-400-normal.woff',
+    malayalam: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansMalayalam/NotoSansMalayalam-Regular.ttf',
     // Odia
-    odia: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-oriya@5.1.1/files/noto-sans-oriya-latin-400-normal.woff',
+    odia: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansOriya/NotoSansOriya-Regular.ttf',
     // Punjabi (Gurmukhi)
-    punjabi: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-gurmukhi@5.1.1/files/noto-sans-gurmukhi-latin-400-normal.woff',
+    punjabi: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansGurmukhi/NotoSansGurmukhi-Regular.ttf',
     // Urdu/Sindhi (Arabic script)
-    arabic: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-arabic@5.1.1/files/noto-sans-arabic-latin-400-normal.woff',
+    arabic: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansArabic/NotoSansArabic-Regular.ttf',
     // Santali (Ol Chiki)
-    santali: 'https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-ol-chiki@5.1.1/files/noto-sans-ol-chiki-latin-400-normal.woff',
+    santali: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansOlChiki/NotoSansOlChiki-Regular.ttf',
 };
 
 // Map languages to their script family
@@ -109,7 +109,7 @@ export async function loadFontForLanguage(pdf: jsPDF, language: Language): Promi
 
         // Register font with jsPDF
         pdf.addFileToVFS(`${fontName}.ttf`, fontCache[script]);
-        pdf.addFont(`${fontName}.ttf`, fontName, 'normal');
+        pdf.addFont(`${fontName}.ttf`, fontName, 'normal', 'Identity-H');
 
         return fontName;
     } catch (error) {

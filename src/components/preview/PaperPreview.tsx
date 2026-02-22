@@ -316,6 +316,9 @@ export function PaperPreview({ paper, isOpen, onClose }: PaperPreviewProps) {
               <FileText className="h-6 w-6" />
               Paper Preview
             </DialogTitle>
+            <p className="sr-only" id="paper-preview-description">
+              Preview of the generated question paper.
+            </p>
             <Button
               onClick={exportToPDF}
               size="sm"

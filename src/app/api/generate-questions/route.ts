@@ -7,6 +7,8 @@ export async function POST(req: Request) {
     });
     try {
         const { contextText, subject, classOrCourse, difficulty, questionCount, language } = await req.json();
+        console.log('AI Generation Request:', { subject, classOrCourse, difficulty, questionCount, language });
+        console.log('API Key present:', !!process.env.GROQ_API_KEY);
 
         if (!contextText) {
             return NextResponse.json({ error: 'Context text is required' }, { status: 400 });
@@ -62,6 +64,7 @@ export async function POST(req: Request) {
         });
 
         const content = chatCompletion.choices[0]?.message?.content || '[]';
+        console.log('Groq Raw Response:', content);
 
         // Clean up potential markdown code blocks if the model ignores the instruction
         const cleanContent = content.replace(/```json/g, '').replace(/```/g, '').trim();
