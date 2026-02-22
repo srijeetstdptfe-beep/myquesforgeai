@@ -1,0 +1,7 @@
+{
+  "code": "BEFIRST10",
+  "description": "10% off on Monthly Plans For FIRST 15 Users Only!!",
+  "discountType": "PERCENTAGE",
+  "discountValue": 20,
+  "isActive": true
+}

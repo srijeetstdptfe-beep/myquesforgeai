@@ -1,0 +1,44 @@
+backend:
+  name: git-gateway
+  branch: main # Ensure this matches your default branch
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+collections:
+  - name: "papers"
+    label: "Question Papers"
+    folder: "src/content/papers"
+    create: true
+    slug: "{{year}}-{{subject}}-{{class}}"
+    fields:
+      - { label: "Exam Name", name: "examName", widget: "string" }
+      - { label: "Subject", name: "subject", widget: "string" }
+      - { label: "Class", name: "class", widget: "string" }
+      - { label: "Year", name: "year", widget: "number" }
+      - { label: "Language", name: "language", widget: "select", options: ["english", "hindi", "marathi"], default: "english" }
+      - { label: "Duration", name: "duration", widget: "string", required: false }
+      - { label: "Total Marks", name: "totalMarks", widget: "number" }
+      - { label: "Paper Data (JSON)", name: "data", widget: "code", default_language: "json" }
+      - { label: "Created At", name: "createdAt", widget: "datetime" }
+
+  - name: "subjects"
+    label: "Subjects"
+    folder: "src/content/subjects"
+    create: true
+    slug: "{{title}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Icon", name: "icon", widget: "string", required: false }
+
+  - name: "offers"
+    label: "Offers/Coupons"
+    folder: "src/content/offers"
+    create: true
+    slug: "{{code}}"
+    fields:
+      - { label: "Code", name: "code", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Discount Type", name: "discountType", widget: "select", options: ["PERCENTAGE", "FIXED"] }
+      - { label: "Discount Value", name: "discountValue", widget: "number" }
+      - { label: "Is Active", name: "isActive", widget: "boolean", default: true }

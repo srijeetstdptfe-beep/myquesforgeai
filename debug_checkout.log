@@ -1,0 +1,68 @@
+[2026-01-04T13:36:09.096Z] Checkout POST started
+[2026-01-04T13:36:09.110Z] Session: {"user":{"name":"Trial","email":"tanvishikalgar0@gmail.com","id":"cmjzry9c20003tuklr9p1pcj1","plan":"UNSET"}}
+[2026-01-04T13:36:09.111Z] Body: {"plan":"starter"}
+[2026-01-07T05:51:53.583Z] Checkout POST started
+[2026-01-07T05:51:53.588Z] Session: {"user":{"name":"Tr","email":"tanvishikalgar0@gmail.com","id":"cmk3loume0000grvfkc6qamgh","plan":"UNSET"}}
+[2026-01-07T05:51:53.590Z] Body: {"plan":"starter"}
+[2026-01-07T06:48:40.298Z] Checkout POST started
+[2026-01-07T06:48:40.315Z] Session: {"user":{"name":"MIBOMBO","email":"srijeetshikalgar00@gmail.com","id":"cmk3mdl3i0001grvf7cqlksqp","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-07T11:40:40.783Z"}}
+[2026-01-07T06:48:40.316Z] Body: {"plan":"free"}
+[2026-01-07T06:48:45.187Z] Checkout POST started
+[2026-01-07T06:48:45.214Z] Session: {"user":{"name":"MIBOMBO","email":"srijeetshikalgar00@gmail.com","id":"cmk3mdl3i0001grvf7cqlksqp","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-07T11:40:40.783Z"}}
+[2026-01-07T06:48:45.215Z] Body: {"plan":"free"}
+[2026-01-07T06:48:53.277Z] Checkout POST started
+[2026-01-07T06:48:53.289Z] Session: {"user":{"name":"MIBOMBO","email":"srijeetshikalgar00@gmail.com","id":"cmk3mdl3i0001grvf7cqlksqp","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-07T11:40:40.783Z"}}
+[2026-01-07T06:48:53.291Z] Body: {"plan":"free"}
+[2026-01-07T06:50:47.021Z] Checkout POST started
+[2026-01-07T06:50:47.025Z] Session: {"user":{"name":"MIBOMBO","email":"srijeetshikalgar00@gmail.com","id":"cmk3mdl3i0001grvf7cqlksqp","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-07T11:40:40.783Z"}}
+[2026-01-07T06:50:47.026Z] Body: {"plan":"payg"}
+[2026-01-07T06:52:51.354Z] Checkout POST started
+[2026-01-07T06:52:51.381Z] Session: {"user":{"name":"MIBOMBO","email":"srijeetshikalgar00@gmail.com","id":"cmk3mdl3i0001grvf7cqlksqp","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-07T11:40:40.783Z"}}
+[2026-01-07T06:52:51.382Z] Body: {"plan":"free"}
+[2026-01-07T06:59:44.134Z] Checkout POST started
+[2026-01-07T06:59:44.146Z] Session: {"user":{"name":"Hi","email":"srijeetshikalgar00@gmail.com","id":"cmk3o4jzg000013vpyrg5v71m","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-07T06:59:38.668Z"}}
+[2026-01-07T06:59:44.147Z] Body: {"plan":"free"}
+[2026-01-07T06:59:44.160Z] License key generated: 9cd4f213-e423-4610-ba05-69cc33951888 for plan: FREE
+[2026-01-07T06:59:47.300Z] Email sent successfully to srijeetshikalgar00@gmail.com
+[2026-01-07T07:57:14.461Z] Checkout POST started
+[2026-01-07T07:57:14.470Z] Session: {"user":{"name":"Hi","email":"srijeetshikalgar00@gmail.com","id":"cmk3o4jzg000013vpyrg5v71m","plan":"FREE","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-07T06:59:38.668Z"}}
+[2026-01-07T07:57:14.471Z] Body: {"plan":"payg"}
+[2026-01-07T07:57:14.760Z] Razorpay Customer Create Failed: undefined
+[2026-01-19T05:39:32.920Z] Checkout POST started
+[2026-01-19T05:39:32.929Z] Session: {"user":{"name":"Shri","email":"srijeetstdptfe@gmail.com","id":"cmkkqax6x0000yop6rgex9mwr","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-19T05:32:39.945Z"}}
+[2026-01-19T05:39:32.931Z] Body: {"plan":"payg"}
+[2026-01-19T05:39:32.960Z] Razorpay Customer Create Failed: Cannot read properties of undefined (reading 'customers')
+[2026-01-19T05:44:43.321Z] Checkout POST started
+[2026-01-19T05:44:43.364Z] Session: {"user":{"name":"Shri","email":"srijeetstdptfe@gmail.com","id":"cmkkqax6x0000yop6rgex9mwr","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-19T05:32:39.945Z"}}
+[2026-01-19T05:44:43.365Z] Body: {"plan":"payg"}
+[2026-01-19T05:44:43.372Z] Razorpay Customer Create Failed: Cannot read properties of undefined (reading 'customers')
+[2026-01-19T10:04:35.819Z] Checkout POST started
+[2026-01-19T10:04:35.881Z] Session: {"user":{"name":"ADMIN","email":"spwebsmiths@gmail.com","id":"cmkksz8n70000ey1kiwx066tg","role":"ADMIN","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-19T06:47:33.762Z"}}
+[2026-01-19T10:04:35.882Z] Body: {"plan":"free"}
+[2026-01-19T10:04:35.897Z] License key generated: 98019931-f138-47da-b822-f422c2587f8e for plan: FREE
+[2026-01-19T10:04:38.657Z] Email sent successfully to spwebsmiths@gmail.com
+[2026-01-19T10:08:00.921Z] Checkout POST started
+[2026-01-19T10:08:00.931Z] Session: {"user":{"name":"ADMIN","email":"spwebsmiths@gmail.com","id":"cmkksz8n70000ey1kiwx066tg","role":"ADMIN","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-19T06:47:33.762Z"}}
+[2026-01-19T10:08:00.931Z] Body: {"plan":"free"}
+[2026-01-19T10:08:00.984Z] License key generated: 9528b8fd-1f15-45f4-86f8-0db0158b52b8 for plan: FREE
+[2026-01-19T10:08:03.921Z] Email sent successfully to spwebsmiths@gmail.com
+[2026-01-19T10:08:25.358Z] Checkout POST started
+[2026-01-19T10:08:25.387Z] Session: {"user":{"name":"ADMIN","email":"spwebsmiths@gmail.com","id":"cmkksz8n70000ey1kiwx066tg","role":"ADMIN","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-19T06:47:33.762Z"}}
+[2026-01-19T10:08:25.388Z] Body: {"plan":"free"}
+[2026-01-19T10:08:25.445Z] License key generated: 075832e8-8ba9-41fa-b3e4-f7faf103c1c7 for plan: FREE
+[2026-01-19T10:08:28.877Z] Email sent successfully to spwebsmiths@gmail.com
+[2026-01-19T10:13:41.163Z] Checkout POST started
+[2026-01-19T10:13:41.171Z] Session: {"user":{"name":"ADMIN","email":"spwebsmiths@gmail.com","id":"cmkksz8n70000ey1kiwx066tg","role":"ADMIN","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-19T06:47:33.762Z"}}
+[2026-01-19T10:13:41.173Z] Body: {"plan":"free"}
+[2026-01-19T10:13:41.189Z] License key generated: bcfaddf2-895a-47d9-a565-8d8481054bec for plan: FREE
+[2026-01-19T10:13:44.172Z] Email sent successfully to spwebsmiths@gmail.com
+[2026-01-19T10:13:57.879Z] Checkout POST started
+[2026-01-19T10:13:57.892Z] Session: {"user":{"name":"ADMIN","email":"spwebsmiths@gmail.com","id":"cmkksz8n70000ey1kiwx066tg","role":"ADMIN","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-19T06:47:33.762Z"}}
+[2026-01-19T10:13:57.894Z] Body: {"plan":"free"}
+[2026-01-19T10:13:57.954Z] License key generated: 36188f68-a889-4bbe-899c-c33145b3504d for plan: FREE
+[2026-01-19T10:14:00.912Z] Email sent successfully to spwebsmiths@gmail.com
+[2026-01-19T10:14:58.575Z] Checkout POST started
+[2026-01-19T10:14:58.588Z] Session: {"user":{"name":"Tanvi","email":"tanvishikalgar0@gmail.com","id":"cmkl0dvhc0000vhk54wi5utt5","role":"USER","plan":"UNSET","manualPaperCount":0,"aiFullPaperUsage":0,"aiQuestionUsage":0,"extraAiFullPapers":0,"extraAiQuestions":0,"extraExports":0,"planVariant":null,"billingCycleStart":"2026-01-19T10:14:53.857Z"}}
+[2026-01-19T10:14:58.589Z] Body: {"plan":"free"}
+[2026-01-19T10:14:58.596Z] License key generated: cbee9f07-3804-4ea7-844a-7d1986b8181f for plan: FREE
+[2026-01-19T10:15:02.125Z] Email sent successfully to tanvishikalgar0@gmail.com

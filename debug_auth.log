@@ -1,0 +1,503 @@
+[2026-01-04T13:34:06.839Z] Authorize called with: srijeeshikalgar00@gmail.com
+[2026-01-04T13:34:06.841Z] User lookup result: Not Found
+[2026-01-04T13:34:06.841Z] User not found or no password
+[2026-01-04T13:34:06.841Z] CRASH in authorize: User not found
+Error: User not found
+    at Object.authorize (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\[root-of-the-server]__1c950c02._.js:193:31)
+    at async Object.callback (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next-auth_41b762db._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next-auth_41b762db._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next-auth_41b762db._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next-auth_41b762db._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next_a3d5fd6b._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next_a3d5fd6b._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next_a3d5fd6b._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-04T13:34:19.404Z] Authorize called with: srijeetshikalgar00@gmail.com
+[2026-01-04T13:34:19.406Z] User lookup result: Found
+[2026-01-04T13:34:19.475Z] Password validation result: false
+[2026-01-04T13:34:19.475Z] Password mismatch
+[2026-01-04T13:34:19.475Z] CRASH in authorize: Invalid password
+Error: Invalid password
+    at Object.authorize (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\[root-of-the-server]__1c950c02._.js:199:31)
+    at async Object.callback (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next-auth_41b762db._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next-auth_41b762db._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next-auth_41b762db._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next-auth_41b762db._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next_a3d5fd6b._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next_a3d5fd6b._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\orchids-question-paper-builder\.next\server\chunks\0460e_next_a3d5fd6b._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\orchids-question-paper-builder\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-04T13:35:39.658Z] Authorize called with: tanvishikalgar0@gmail.com
+[2026-01-04T13:35:39.662Z] User lookup result: Found
+[2026-01-04T13:35:39.730Z] Password validation result: true
+[2026-01-04T13:36:34.981Z] Authorize called with: fresh@test.com
+[2026-01-04T13:36:34.983Z] User lookup result: Found
+[2026-01-04T13:36:35.047Z] Password validation result: true
+[2026-01-04T13:37:59.055Z] Authorize called with: fresh@test.com
+[2026-01-04T13:37:59.059Z] User lookup result: Found
+[2026-01-04T13:37:59.145Z] Password validation result: true
+[2026-01-05T04:22:29.090Z] Authorize called with: srijeet@gmail.com
+[2026-01-05T04:22:29.250Z] User lookup result: Found
+[2026-01-05T04:22:29.320Z] Password validation result: false
+[2026-01-05T04:22:29.320Z] Password mismatch
+[2026-01-05T04:22:29.320Z] CRASH in authorize: Invalid password
+Error: Invalid password
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:198:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-05T04:22:34.760Z] Authorize called with: srijeet@gmail.com
+[2026-01-05T04:22:34.762Z] User lookup result: Found
+[2026-01-05T04:22:34.826Z] Password validation result: true
+[2026-01-05T04:22:34.827Z] JWT Callback: User found, setting token.id and plan. UserID: cmjzrg0150000tukl4ezsi3wc
+[2026-01-05T04:22:52.604Z] Authorize called with: srijeetshikalgar00@gmail.com
+[2026-01-05T04:22:52.606Z] User lookup result: Found
+[2026-01-05T04:22:52.670Z] Password validation result: true
+[2026-01-05T04:22:52.670Z] JWT Callback: User found, setting token.id and plan. UserID: cmjzrh7at0002tuklk46vltsn
+[2026-01-05T04:23:14.617Z] Authorize called with: srijeetshikalgar00@gmail.com
+[2026-01-05T04:23:14.620Z] User lookup result: Found
+[2026-01-05T04:23:14.685Z] Password validation result: false
+[2026-01-05T04:23:14.685Z] Password mismatch
+[2026-01-05T04:23:14.685Z] CRASH in authorize: Invalid password
+Error: Invalid password
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:198:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-07T05:51:27.721Z] Authorize called with: tanvishikalgar0@gmail.com
+[2026-01-07T05:51:27.723Z] User lookup result: Found
+[2026-01-07T05:51:27.785Z] Password validation result: true
+[2026-01-07T05:51:27.786Z] JWT Callback: User found, setting token.id and plan. UserID: cmk3loume0000grvfkc6qamgh
+[2026-01-07T05:53:12.015Z] JWT Callback: Update triggered with plan: FREE
+[2026-01-07T06:10:41.726Z] Authorize called with: srijeetshikalgar00@gmail.com
+[2026-01-07T06:10:41.728Z] User lookup result: Found
+[2026-01-07T06:10:41.795Z] Password validation result: true
+[2026-01-07T06:10:41.796Z] JWT Callback: User found, setting token.id and plan. UserID: cmk3mdl3i0001grvf7cqlksqp
+[2026-01-07T06:28:43.180Z] Authorize called with: srijeetshikalgar00@gmail.com
+[2026-01-07T06:28:43.182Z] User lookup result: Found
+[2026-01-07T06:28:43.250Z] Password validation result: true
+[2026-01-07T06:28:43.250Z] JWT Callback: User found, setting token.id and plan. UserID: cmk3mdl3i0001grvf7cqlksqp
+[2026-01-07T06:48:35.978Z] Authorize called with: srijeetshikalgar00@gmail.com
+[2026-01-07T06:48:35.981Z] User lookup result: Found
+[2026-01-07T06:48:36.044Z] Password validation result: true
+[2026-01-07T06:48:36.044Z] JWT Callback: User found, setting token.id and plan. UserID: cmk3mdl3i0001grvf7cqlksqp
+[2026-01-07T06:52:52.077Z] JWT Callback: Update triggered with plan: FREE
+[2026-01-07T06:59:39.669Z] Authorize called with: srijeetshikalgar00@gmail.com
+[2026-01-07T06:59:39.671Z] User lookup result: Found
+[2026-01-07T06:59:39.734Z] Password validation result: true
+[2026-01-07T06:59:39.734Z] JWT Callback: User found, setting token.id and plan. UserID: cmk3o4jzg000013vpyrg5v71m
+[2026-01-07T07:00:50.839Z] JWT Callback: Update triggered with plan: FREE
+[2026-01-19T05:32:41.434Z] Authorize called with: srijeetstdptfe@gmail.com
+[2026-01-19T05:32:41.478Z] User lookup result: Found
+[2026-01-19T05:32:41.541Z] Password validation result: true
+[2026-01-19T05:32:41.541Z] JWT Callback: User found, setting token.id and plan. UserID: cmkkqax6x0000yop6rgex9mwr
+[2026-01-19T06:38:28.879Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T06:38:28.931Z] User lookup result: Not Found
+[2026-01-19T06:38:28.931Z] User not found or no password
+[2026-01-19T06:38:28.932Z] CRASH in authorize: User not found
+Error: User not found
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:192:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-19T06:38:35.822Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T06:38:35.824Z] User lookup result: Not Found
+[2026-01-19T06:38:35.824Z] User not found or no password
+[2026-01-19T06:38:35.825Z] CRASH in authorize: User not found
+Error: User not found
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:192:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-19T06:42:16.879Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T06:42:16.886Z] User lookup result: Not Found
+[2026-01-19T06:42:16.886Z] User not found or no password
+[2026-01-19T06:42:16.887Z] CRASH in authorize: User not found
+Error: User not found
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:192:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-19T06:42:20.783Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T06:42:20.786Z] User lookup result: Not Found
+[2026-01-19T06:42:20.786Z] User not found or no password
+[2026-01-19T06:42:20.787Z] CRASH in authorize: User not found
+Error: User not found
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:192:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-19T06:47:34.924Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T06:47:34.927Z] User lookup result: Found
+[2026-01-19T06:47:34.991Z] Password validation result: true
+[2026-01-19T06:47:34.991Z] JWT Callback: User found, setting token.id and plan. UserID: cmkksz8n70000ey1kiwx066tg
+[2026-01-19T06:48:50.019Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T06:48:50.022Z] User lookup result: Found
+[2026-01-19T06:48:50.085Z] Password validation result: true
+[2026-01-19T06:48:50.085Z] JWT Callback: User found, setting token.id and plan. UserID: cmkksz8n70000ey1kiwx066tg
+[2026-01-19T08:55:50.796Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T08:55:50.842Z] User lookup result: Found
+[2026-01-19T08:55:50.911Z] Password validation result: true
+[2026-01-19T08:55:50.911Z] JWT Callback: User found, setting token.id and plan. UserID: cmkksz8n70000ey1kiwx066tg
+[2026-01-19T09:46:51.584Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T09:46:51.593Z] User lookup result: Found
+[2026-01-19T09:46:51.664Z] Password validation result: true
+[2026-01-19T09:46:51.665Z] JWT Callback: User found, setting token.id and plan. UserID: cmkksz8n70000ey1kiwx066tg
+[2026-01-19T09:53:02.997Z] Authorize called with: srijeetstdptfe@gmail.com
+[2026-01-19T09:53:03.000Z] User lookup result: Found
+[2026-01-19T09:53:03.063Z] Password validation result: false
+[2026-01-19T09:53:03.063Z] Password mismatch
+[2026-01-19T09:53:03.064Z] CRASH in authorize: Invalid password
+Error: Invalid password
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:198:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-19T10:04:29.327Z] Authorize called with: srijeetstdptfe@gmail.com
+[2026-01-19T10:04:29.331Z] User lookup result: Found
+[2026-01-19T10:04:29.397Z] Password validation result: false
+[2026-01-19T10:04:29.398Z] Password mismatch
+[2026-01-19T10:04:29.398Z] CRASH in authorize: Invalid password
+Error: Invalid password
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:198:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-19T10:14:55.038Z] Authorize called with: tanvishikalgar0@gmail.com
+[2026-01-19T10:14:55.089Z] User lookup result: Found
+[2026-01-19T10:14:55.161Z] Password validation result: true
+[2026-01-19T10:14:55.162Z] JWT Callback: User found, setting token.id and plan. UserID: cmkl0dvhc0000vhk54wi5utt5
+[2026-01-19T10:15:39.959Z] JWT Callback: Update triggered with plan: FREE
+[2026-01-19T10:17:13.557Z] Authorize called with: tanvishikalgar0@gmail.com
+[2026-01-19T10:17:13.560Z] User lookup result: Found
+[2026-01-19T10:17:13.623Z] Password validation result: false
+[2026-01-19T10:17:13.623Z] Password mismatch
+[2026-01-19T10:17:13.623Z] CRASH in authorize: Invalid password
+Error: Invalid password
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:198:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-19T10:17:43.747Z] Authorize called with: tanvishikalgar0@gmail.com
+[2026-01-19T10:17:43.749Z] User lookup result: Found
+[2026-01-19T10:17:43.812Z] Password validation result: false
+[2026-01-19T10:17:43.812Z] Password mismatch
+[2026-01-19T10:17:43.812Z] CRASH in authorize: Invalid password
+Error: Invalid password
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:198:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-01-19T10:21:23.466Z] Authorize called with: tanvishikalgar0@gmail.com
+[2026-01-19T10:21:23.468Z] User lookup result: Found
+[2026-01-19T10:21:23.539Z] Password validation result: false
+[2026-01-19T10:21:23.540Z] OTP-verified login successful
+[2026-01-19T10:21:23.540Z] JWT Callback: User found, setting token.id and plan. UserID: cmkl0dvhc0000vhk54wi5utt5
+[2026-01-19T11:16:12.136Z] Authorize called with: tanvishikalgar0@gmail.com
+[2026-01-19T11:16:12.214Z] User lookup result: Found
+[2026-01-19T11:16:12.286Z] Password validation result: false
+[2026-01-19T11:16:12.287Z] OTP-verified login successful
+[2026-01-19T11:16:12.288Z] JWT Callback: User found, setting token.id and plan. UserID: cmkl0dvhc0000vhk54wi5utt5
+[2026-01-19T11:17:09.348Z] Authorize called with: spwebsmiths@gmail.com
+[2026-01-19T11:17:09.351Z] User lookup result: Found
+[2026-01-19T11:17:09.414Z] Password validation result: true
+[2026-01-19T11:17:09.480Z] JWT Callback: User found, setting token.id and plan. UserID: cmkksz8n70000ey1kiwx066tg
+[2026-02-02T07:18:15.809Z] Authorize called with: srijeetstfptfe@gmail.com
+[2026-02-02T07:18:15.864Z] User lookup result: Not Found
+[2026-02-02T07:18:15.865Z] User not found or no password
+[2026-02-02T07:18:15.866Z] CRASH in authorize: User not found
+Error: User not found
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:192:31)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-02-02T07:19:18.759Z] Authorize called with: srijeetstdptfe@gmail.com
+[2026-02-02T07:19:18.761Z] User lookup result: Found
+[2026-02-02T07:19:18.824Z] Password validation result: false
+[2026-02-02T07:19:18.825Z] OTP-verified login successful
+[2026-02-02T07:19:18.825Z] JWT Callback: User found, setting token.id and plan. UserID: cmkkqax6x0000yop6rgex9mwr
+[2026-02-02T07:20:27.279Z] Authorize called with: spwebsmiths@gmail.com
+[2026-02-02T07:20:27.282Z] User lookup result: Found
+[2026-02-02T07:20:27.354Z] Password validation result: false
+[2026-02-02T07:20:27.419Z] Password mismatch
+[2026-02-02T07:20:27.420Z] CRASH in authorize: Invalid password
+Error: Invalid password
+    at Object.authorize (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\[root-of-the-server]__c296aa14._.js:203:35)
+    at async Object.callback (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:1600:20)
+    at async AuthHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3333:38)
+    at async NextAuthRouteHandler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3501:30)
+    at async NextAuth._args$ (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next-auth_98f88faf._.js:3536:24)
+    at async AppRouteRouteModule.do (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:38696)
+    at async AppRouteRouteModule.handle (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:5:45978)
+    at async responseGenerator (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10852:38)
+    at async AppRouteRouteModule.handleResponse (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\compiled\next-server\app-route-turbo.runtime.dev.js:1:187643)
+    at async handleResponse (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10914:32)
+    at async handler (C:\Users\Admin\Desktop\Papercraft\.next\server\chunks\281b8_next_688af0f5._.js:10966:13)
+    at async DevServer.renderToResponseWithComponentsImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1422:9)
+    at async DevServer.renderPageComponent (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1474:24)
+    at async DevServer.renderToResponseImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1514:32)
+    at async DevServer.pipeImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\next-server.js:393:17)
+    at async DevServer.handleRequestImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\base-server.js:916:17)
+    at async C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:399:20
+    at async Span.traceAsyncFn (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (C:\Users\Admin\Desktop\Papercraft\node_modules\next\dist\server\lib\start-server.js:226:13)
+[2026-02-02T07:20:56.459Z] Authorize called with: spwebsmiths@gmail.com
+[2026-02-02T07:20:56.461Z] User lookup result: Found
+[2026-02-02T07:20:56.525Z] Password validation result: false
+[2026-02-02T07:20:56.525Z] OTP-verified login successful
+[2026-02-02T07:20:56.525Z] JWT Callback: User found, setting token.id and plan. UserID: cmkksz8n70000ey1kiwx066tg
