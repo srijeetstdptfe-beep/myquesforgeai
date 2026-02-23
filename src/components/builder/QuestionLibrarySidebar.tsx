@@ -90,7 +90,7 @@ function DraggableQuestionType({ type, disabled, onClick }: DraggableQuestionTyp
         <TooltipTrigger asChild>
           <Button
             variant="ghost"
-            className="w-full justify-start h-10 px-3 text-[11px] font-black uppercase tracking-widest relative group border-2 border-transparent hover:border-black rounded-none transition-all hover:bg-black hover:text-white"
+            className="w-full justify-start h-8 px-3 text-xs font-black uppercase tracking-widest relative group border-2 border-transparent hover:border-black rounded-none transition-all hover:bg-black hover:text-white"
             disabled={disabled}
             onClick={onClick}
           >
@@ -139,13 +139,10 @@ export function QuestionLibrarySidebar() {
   return (
     <TooltipProvider>
       <div className="w-64 border-r-2 border-black bg-white flex flex-col h-full overflow-hidden">
-        <div className="p-6 border-b-2 border-black bg-slate-50">
+        <div className="p-4 border-b-2 border-black bg-slate-50">
           <h2 className="font-black text-xs uppercase tracking-[0.2em] text-black">Component Blocks</h2>
-          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-2 leading-relaxed">
-            Drag to canvas or click to insert into active section
-          </p>
         </div>
-        <ScrollArea className="flex-1 p-4">
+        <ScrollArea className="flex-1 p-2">
           {renderCategory('Objective', QUESTION_TYPE_CATEGORIES.objective)}
           {renderCategory('Assessment', QUESTION_TYPE_CATEGORIES.shortAnswer)}
           {renderCategory('Composition', QUESTION_TYPE_CATEGORIES.descriptive)}

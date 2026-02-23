@@ -137,7 +137,7 @@ export function QuestionBlockCard({
                       Adjust Marks
                     </TooltipContent>
                   </Tooltip>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">PK</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Marks</span>
                 </div>
               )}
             </div>

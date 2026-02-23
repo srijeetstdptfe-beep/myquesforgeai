@@ -151,7 +151,4 @@
   list-style-type: decimal;
 }
 
-/* Hide Next.js error overlay portal */
-nextjs-portal {
-  display: none !important;
-}
+/* Error overlay enabled for debugging */

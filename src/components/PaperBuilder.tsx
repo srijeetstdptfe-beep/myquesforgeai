@@ -11,23 +11,40 @@ import {
 } from '@/components/builder';
 import { PaperPreview } from '@/components/preview/PaperPreview';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Eye, Save, FileText, Languages } from 'lucide-react';
+import {
+  ArrowLeft,
+  Eye,
+  Save,
+  FileText,
+  Languages,
+  Menu,
+  ChevronLeft,
+  ChevronRight,
+  MoreHorizontal,
+} from 'lucide-react';
 import Link from 'next/link';
 import { TranslateModal } from './TranslateModal';
 import {
   DndContext, // Restored
   closestCenter, // Restored (though we might not use it, good to keep if needed or remove if unused, but avoiding lints first)
   KeyboardSensor, // Restored
-  PointerSensor, // Restored
-  useSensor, // Restored
-  useSensors, // Restored
-  DragEndEvent, // Restored
-  DragOverEvent, // Restored
-  DragStartEvent, // Restored
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+  DragOverEvent,
+  DragStartEvent,
   DragOverlay,
   defaultDropAnimationSideEffects,
   pointerWithin,
 } from '@dnd-kit/core';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 import {
   sortableKeyboardCoordinates,
   arrayMove,
@@ -74,6 +91,8 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
   const [pyqList, setPyqList] = useState<any[]>([]);
   const [isSavingToBank, setIsSavingToBank] = useState(false);
   const [isLoadingPyqs, setIsLoadingPyqs] = useState(false);
+  const [leftSidebarCollapsed, setLeftSidebarCollapsed] = useState(false);
+  const [rightSidebarCollapsed, setRightSidebarCollapsed] = useState(false);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -179,6 +198,20 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
     }
   };
 
+  const downloadPaperJson = () => {
+    if (!currentPaper) return;
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentPaper, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    const date = new Date().toISOString().split('T')[0];
+    const filename = `paper-${currentPaper.metadata.subject || 'export'}-${date}.json`.toLowerCase();
+    downloadAnchorNode.setAttribute("download", filename);
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+    toast.success('JSON file downloaded for manual CMS upload');
+  };
+
   const handleSave = async () => {
     if (!currentPaper) return;
     setIsSavingToBank(true);
@@ -198,11 +231,30 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
         })
       });
 
-      if (!response.ok) throw new Error('Failed to sync with workspace');
-      toast.success('Paper saved to Workspace successfully!');
+      const result = await response.json();
+
+      if (!response.ok) throw new Error(result.error || 'Failed to sync');
+
+      if (result.isLocalOnly) {
+        toast('Sync disabled on live site', {
+          description: "Paper saved to session. Download JSON to upload manually to CMS.",
+          action: {
+            label: "Download JSON",
+            onClick: () => downloadPaperJson()
+          },
+          duration: 10000
+        });
+      } else {
+        toast.success('Paper synced to Workspace successfully!');
+      }
     } catch (error) {
       console.error(error);
-      toast.error('Saved locally, but failed to sync with workspace');
+      toast.error('Saved locally, but failed to sync. Try downloading JSON.', {
+        action: {
+          label: "Download JSON",
+          onClick: () => downloadPaperJson()
+        }
+      });
     } finally {
       setIsSavingToBank(false);
     }
@@ -254,105 +306,68 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
   return (
     <TooltipProvider>
       <div className="h-screen flex flex-col bg-white text-black selection:bg-black selection:text-white">
-        <header className="border-b-[3px] border-black bg-white px-6 py-4 flex items-center justify-between flex-shrink-0 z-50">
-          <div className="flex items-center gap-6">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link href="/dashboard">
-                  <Button variant="ghost" size="sm" className="h-10 w-10 p-0 border-2 border-transparent hover:border-black rounded-none">
-                    <ArrowLeft className="h-5 w-5" />
-                  </Button>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="bottom" className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[10px]">
-                Return to Workspace Dashboard
-              </TooltipContent>
-            </Tooltip>
+        <header className="border-b-2 border-black bg-white px-4 py-2 flex items-center justify-between flex-shrink-0 z-50">
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard">
+              <Button variant="ghost" size="icon" className="h-8 w-8 border-2 border-transparent hover:border-black rounded-none">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+            </Link>
 
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 border-2 border-black flex items-center justify-center bg-black text-white">
-                <FileText className="h-6 w-6" />
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 border-2 border-black flex items-center justify-center bg-black text-white">
+                <FileText className="h-4 w-4" />
               </div>
               <div>
-                <h1 className="text-xl font-black leading-none uppercase tracking-tighter">
+                <h1 className="text-sm font-black leading-none uppercase tracking-tight truncate max-w-[150px] md:max-w-[300px]">
                   {currentPaper.metadata.examName || 'Untitled Paper'}
                 </h1>
-                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mt-1">
-                  {currentPaper.metadata.subject || 'GENERAL'} • {currentPaper.metadata.classOrCourse || 'ALL CLASSES'}
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">
+                  {currentPaper.metadata.subject || 'GENERAL'} • {currentPaper.metadata.classOrCourse || 'ALL'}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleOpenPyq}
-                  className="hidden md:flex h-10 border-2 border-black rounded-none font-black uppercase tracking-widest text-[10px] items-center gap-2 hover:bg-black hover:text-white transition-all"
-                >
-                  <span className="text-sm">↺</span> Workspace
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleSave}
+              disabled={isSavingToBank}
+              className="h-8 border-2 border-black rounded-none font-black uppercase tracking-widest text-xs hover:bg-black hover:text-white transition-all px-3"
+            >
+              <Save className="h-3 w-3 mr-2" />
+              {isSavingToBank ? 'Saving...' : 'Save'}
+            </Button>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setPreviewOpen(true)}
+              className="h-8 border-2 border-black rounded-none font-black uppercase tracking-widest text-xs hover:bg-black hover:text-white transition-all px-3"
+            >
+              <Eye className="h-3 w-3 mr-2" />
+              Preview
+            </Button>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="h-8 w-8 p-0 border-2 border-black rounded-none flex items-center justify-center">
+                  <MoreHorizontal className="h-4 w-4" />
                 </Button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[10px]">
-                Load Papers from Workspace
-              </TooltipContent>
-            </Tooltip>
-
-            <PaperMetadataEditor asSheet />
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setTranslateModalOpen(true)}
-                  className="flex h-10 border-2 border-black rounded-none font-black uppercase tracking-widest text-[10px] items-center gap-2 hover:bg-black hover:text-white transition-all"
-                >
-                  <Languages className="h-4 w-4" />
-                  Translate
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[10px]">
-                Translate Paper using AI
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setPreviewOpen(true)}
-                  className="h-10 border-2 border-black rounded-none font-black uppercase tracking-widest text-[10px] hover:bg-black hover:text-white transition-all px-4"
-                >
-                  <Eye className="h-4 w-4 mr-2" />
-                  Preview
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[10px]">
-                Preview Final Document
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  size="sm"
-                  onClick={handleSave}
-                  className="h-10 aspect-square p-0 bg-black text-white rounded-none border-2 border-black hover:bg-white hover:text-black transition-all"
-                >
-                  <Save className="h-5 w-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[10px]">
-                Save Changes to Cloud
-              </TooltipContent>
-            </Tooltip>
-
-            {/* Legacy bank button removed */}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="rounded-none border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <DropdownMenuItem onClick={handleOpenPyq} className="font-black uppercase text-xs tracking-widest">
+                  Load Workspace Paper
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setTranslateModalOpen(true)} className="font-black uppercase text-xs tracking-widest">
+                  Translate with AI
+                </DropdownMenuItem>
+                <DropdownMenuSeparator className="bg-black/10" />
+                <PaperMetadataEditor asSheet />
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
@@ -363,10 +378,34 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className="flex-1 flex overflow-hidden">
-            <QuestionLibrarySidebar />
+          <div className="flex-1 flex overflow-hidden relative">
+            {/* Left Sidebar Toggle */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setLeftSidebarCollapsed(!leftSidebarCollapsed)}
+              className="absolute left-0 top-4 z-40 h-8 w-6 border-l-0 border-2 border-black bg-white rounded-none hover:bg-black hover:text-white transition-all"
+              style={{ left: leftSidebarCollapsed ? '0' : '256px' }}
+            >
+              {leftSidebarCollapsed ? <ChevronRight className="h-3 w-3" /> : <ChevronLeft className="h-3 w-3" />}
+            </Button>
+
+            {!leftSidebarCollapsed && <QuestionLibrarySidebar />}
+
             <BuilderCanvas activeId={activeId} activeType={activeType} />
-            <PropertiesPanel />
+
+            {!rightSidebarCollapsed && <PropertiesPanel />}
+
+            {/* Right Sidebar Toggle */}
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setRightSidebarCollapsed(!rightSidebarCollapsed)}
+              className="absolute right-0 top-4 z-40 h-8 w-6 border-r-0 border-2 border-black bg-white rounded-none hover:bg-black hover:text-white transition-all"
+              style={{ right: rightSidebarCollapsed ? '0' : '320px' }}
+            >
+              {rightSidebarCollapsed ? <ChevronLeft className="h-3 w-3" /> : <ChevronRight className="h-3 w-3" />}
+            </Button>
           </div>
 
           {typeof document !== 'undefined' && createPortal(

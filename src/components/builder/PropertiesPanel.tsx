@@ -62,27 +62,20 @@ export function PropertiesPanel() {
   return (
     <TooltipProvider>
       <div className="w-80 border-l-2 border-black bg-white flex flex-col h-full min-h-0 overflow-hidden">
-        <div className="p-6 border-b-2 border-black bg-slate-50">
+        <div className="p-4 border-b-2 border-black bg-slate-50 flex items-center justify-between">
           <h2 className="font-black text-xs uppercase tracking-[0.2em] text-black">Configuration</h2>
         </div>
         <ScrollArea className="flex-1">
-          <div className="p-6 space-y-8">
+          <div className="p-4 space-y-6">
             {selectedQuestion ? (
               <>
-                <div>
-                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] mb-6 px-3 border-l-2 border-slate-200">
-                    Question Settings
+                <div className="space-y-4">
+                  <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-2 border-l-2 border-black mb-4">
+                    Block Settings
                   </h3>
-                  <div className="space-y-6">
-                    <div className="space-y-3">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Label className="text-[10px] font-black uppercase tracking-widest cursor-help">Weightage (Marks)</Label>
-                        </TooltipTrigger>
-                        <TooltipContent side="left" className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[9px] mr-2">
-                          Quantitative value assigned to this block
-                        </TooltipContent>
-                      </Tooltip>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Weightage</Label>
                       <Input
                         type="number"
                         min={0}
@@ -90,144 +83,102 @@ export function PropertiesPanel() {
                         onChange={(e) =>
                           handleQuestionChange({ marks: parseInt(e.target.value) || 0 })
                         }
-                        className="h-10 border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-black transition-all"
+                        className="h-8 border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0"
                       />
                     </div>
-                    <div className="space-y-3">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Label className="text-[10px] font-black uppercase tracking-widest cursor-help">Complexity</Label>
-                        </TooltipTrigger>
-                        <TooltipContent side="left" className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[9px] mr-2">
-                          Cognitive difficulty level for assessment
-                        </TooltipContent>
-                      </Tooltip>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Complexity</Label>
                       <Select
                         value={selectedQuestion.difficulty || 'medium'}
                         onValueChange={(value) =>
                           handleQuestionChange({ difficulty: value as Difficulty })
                         }
                       >
-                        <SelectTrigger className="h-10 border-2 border-black rounded-none font-bold text-sm focus:ring-0">
+                        <SelectTrigger className="h-8 border-2 border-black rounded-none font-bold text-sm focus:ring-0 px-2">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="rounded-none border-2 border-black">
-                          <SelectItem value="easy" className="font-bold uppercase tracking-widest text-[10px]">Easy</SelectItem>
-                          <SelectItem value="medium" className="font-bold uppercase tracking-widest text-[10px]">Medium</SelectItem>
-                          <SelectItem value="hard" className="font-bold uppercase tracking-widest text-[10px]">Hard</SelectItem>
+                          <SelectItem value="easy" className="font-bold uppercase tracking-widest text-[11px]">Easy</SelectItem>
+                          <SelectItem value="medium" className="font-bold uppercase tracking-widest text-[11px]">Medium</SelectItem>
+                          <SelectItem value="hard" className="font-bold uppercase tracking-widest text-[11px]">Hard</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
-                    <div className="space-y-3">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Label className="text-[10px] font-black uppercase tracking-widest cursor-help">Language Module</Label>
-                        </TooltipTrigger>
-                        <TooltipContent side="left" className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[9px] mr-2">
-                          Linguistic context for this specific question
-                        </TooltipContent>
-                      </Tooltip>
-                      <Select
-                        value={selectedQuestion.language}
-                        onValueChange={(value) =>
-                          handleQuestionChange({ language: value as Language })
-                        }
-                      >
-                        <SelectTrigger className="h-10 border-2 border-black rounded-none font-bold text-sm focus:ring-0">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="rounded-none border-2 border-black">
-                          {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
-                            <SelectItem key={key} value={key} className="font-bold uppercase tracking-widest text-[10px]">
-                              {label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-3">
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Label className="text-[10px] font-black uppercase tracking-widest cursor-help">Contextual Instructions</Label>
-                        </TooltipTrigger>
-                        <TooltipContent side="left" className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[9px] mr-2">
-                          Supplemental guidance displayed above the question
-                        </TooltipContent>
-                      </Tooltip>
-                      <Textarea
-                        value={selectedQuestion.instructions || ''}
-                        onChange={(e) =>
-                          handleQuestionChange({ instructions: e.target.value })
-                        }
-                        placeholder="e.g., Answer any 3 of the following"
-                        className="min-h-[100px] border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0 focus-visible:ring-offset-0 transition-all resize-none"
-                      />
-                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Linguistic Module</Label>
+                    <Select
+                      value={selectedQuestion.language}
+                      onValueChange={(value) =>
+                        handleQuestionChange({ language: value as Language })
+                      }
+                    >
+                      <SelectTrigger className="h-8 border-2 border-black rounded-none font-bold text-sm focus:ring-0 px-2">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-none border-2 border-black">
+                        {Object.entries(LANGUAGE_LABELS).map(([key, label]) => (
+                          <SelectItem key={key} value={key} className="font-bold uppercase tracking-widest text-[11px]">
+                            {label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Instructions</Label>
+                    <Textarea
+                      value={selectedQuestion.instructions || ''}
+                      onChange={(e) =>
+                        handleQuestionChange({ instructions: e.target.value })
+                      }
+                      placeholder="e.g., Answer any 3"
+                      className="min-h-[60px] border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0 transition-all resize-none p-2"
+                    />
                   </div>
                 </div>
               </>
             ) : selectedSection ? (
               <>
-                <div>
-                  <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] mb-6 px-3 border-l-2 border-slate-200">
-                    Section Logistics
+                <div className="space-y-4">
+                  <h3 className="text-[11px] font-black text-slate-400 uppercase tracking-widest px-2 border-l-2 border-black mb-4">
+                    Division Logistics
                   </h3>
-                  <div className="space-y-6">
-                    <div className="space-y-3">
-                      <Label className="text-[10px] font-black uppercase tracking-widest">Division Title</Label>
-                      <Input
-                        value={selectedSection.title}
-                        onChange={(e) =>
-                          handleSectionChange({ title: e.target.value })
-                        }
-                        placeholder="Section A"
-                        className="h-10 border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-black transition-all"
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <Label className="text-[10px] font-black uppercase tracking-widest">Internal Description</Label>
-                      <Textarea
-                        value={selectedSection.description || ''}
-                        onChange={(e) =>
-                          handleSectionChange({ description: e.target.value })
-                        }
-                        placeholder="Objective type questions"
-                        className="min-h-[80px] border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0 focus-visible:ring-offset-0 transition-all resize-none"
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <Label className="text-[10px] font-black uppercase tracking-widest">Public Instructions</Label>
-                      <Textarea
-                        value={selectedSection.instructions || ''}
-                        onChange={(e) =>
-                          handleSectionChange({ instructions: e.target.value })
-                        }
-                        placeholder="Answer all questions"
-                        className="min-h-[100px] border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0 focus-visible:ring-offset-0 transition-all resize-none"
-                      />
-                    </div>
-                    <div className="pt-6 border-t-2 border-black space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Total Blocks</span>
-                        <span className="font-black text-sm">{selectedSection.questions.length}</span>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Section Weightage</span>
-                        <span className="font-black text-sm">
-                          {selectedSection.questions.reduce((sum, q) => sum + q.marks, 0)} PK
-                        </span>
-                      </div>
-                    </div>
+                  <div className="space-y-1.5">
+                    <Label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Division Title</Label>
+                    <Input
+                      value={selectedSection.title}
+                      onChange={(e) =>
+                        handleSectionChange({ title: e.target.value })
+                      }
+                      className="h-8 border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0"
+                    />
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-[11px] font-black uppercase tracking-widest text-slate-500">Public Guidance</Label>
+                    <Textarea
+                      value={selectedSection.instructions || ''}
+                      onChange={(e) =>
+                        handleSectionChange({ instructions: e.target.value })
+                      }
+                      placeholder="Answer all questions"
+                      className="min-h-[80px] border-2 border-black rounded-none font-bold text-sm focus-visible:ring-0 resize-none p-2"
+                    />
+                  </div>
+
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-[11px] font-black uppercase tracking-widest text-slate-400">
+                    <span>Metrics: {selectedSection.questions.length} Blocks • {selectedSection.questions.reduce((sum, q) => sum + q.marks, 0)} Marks</span>
                   </div>
                 </div>
               </>
             ) : (
-              <div className="text-center py-20 px-6">
-                <div className="w-16 h-16 border-2 border-slate-100 flex items-center justify-center mx-auto mb-6">
-                  <Edit3 className="h-6 w-6 text-slate-100" />
-                </div>
-                <p className="text-[10px] font-black uppercase tracking-widest text-slate-300 leading-relaxed">
-                  Select a component from the canvas to modify its properties
+              <div className="text-center py-20 px-4">
+                <Edit3 className="h-6 w-6 text-slate-100 mx-auto mb-4" />
+                <p className="text-[11px] font-black uppercase tracking-widest text-slate-300">
+                  Select a component to configure properties
                 </p>
               </div>
             )}

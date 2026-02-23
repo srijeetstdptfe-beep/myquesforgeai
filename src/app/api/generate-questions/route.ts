@@ -1,17 +1,60 @@
 import { Groq } from 'groq-sdk';
 import { NextResponse } from 'next/server';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdf = require('pdf-parse');
+import mammoth from 'mammoth';
 
 export async function POST(req: Request) {
     const groq = new Groq({
         apiKey: process.env.GROQ_API_KEY,
     });
     try {
-        const { contextText, subject, classOrCourse, difficulty, questionCount, language } = await req.json();
-        console.log('AI Generation Request:', { subject, classOrCourse, difficulty, questionCount, language });
-        console.log('API Key present:', !!process.env.GROQ_API_KEY);
+        let contextText = '';
+        let subject = '';
+        let classOrCourse = '';
+        let difficulty = 'medium';
+        let questionCount = 10;
+        let language = 'english';
 
-        if (!contextText) {
-            return NextResponse.json({ error: 'Context text is required' }, { status: 400 });
+        const contentType = req.headers.get('content-type') || '';
+
+        if (contentType.includes('multipart/form-data')) {
+            const formData = await req.formData();
+            subject = formData.get('subject') as string || '';
+            classOrCourse = formData.get('classOrCourse') as string || '';
+            difficulty = formData.get('difficulty') as string || 'medium';
+            questionCount = parseInt(formData.get('questionCount') as string) || 10;
+            language = formData.get('language') as string || 'english';
+            contextText = formData.get('contextText') as string || '';
+
+            const files = formData.getAll('files') as File[];
+            for (const file of files) {
+                const buffer = Buffer.from(await file.arrayBuffer());
+                if (file.type === 'application/pdf') {
+                    const pdfData = await pdf(buffer);
+                    contextText += `\n\nContent from ${file.name}:\n${pdfData.text}`;
+                } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                    const docxData = await mammoth.extractRawText({ buffer });
+                    contextText += `\n\nContent from ${file.name}:\n${docxData.value}`;
+                } else if (file.type === 'text/plain') {
+                    contextText += `\n\nContent from ${file.name}:\n${buffer.toString('utf-8')}`;
+                }
+            }
+        } else {
+            const body = await req.json();
+            contextText = body.contextText || '';
+            subject = body.subject || '';
+            classOrCourse = body.classOrCourse || '';
+            difficulty = body.difficulty || 'medium';
+            questionCount = body.questionCount || 10;
+            language = body.language || 'english';
+        }
+
+        console.log('AI Generation Request:', { subject, classOrCourse, difficulty, questionCount, language, contextLength: contextText.length });
+
+        if (!contextText || contextText.trim().length === 0) {
+            return NextResponse.json({ error: 'Context text is required. Please provide text or upload a valid document.' }, { status: 400 });
         }
 
         // Permissions and Limits removed for Git-based architecture

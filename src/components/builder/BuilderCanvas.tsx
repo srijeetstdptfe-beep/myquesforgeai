@@ -135,7 +135,7 @@ export function SectionCard({ section, sectionIndex, isOverlay }: SectionCardPro
                 {section.questions.length} Q
               </Badge>
               <Badge variant="outline" className="border-black text-black rounded-none font-bold uppercase tracking-widest text-[8px] h-4">
-                {totalMarks} PK
+                {totalMarks} Marks
               </Badge>
             </div>
           </div>
@@ -237,7 +237,7 @@ export function BuilderCanvas({ activeId, activeType }: BuilderCanvasProps) {
               {currentPaper.sections.length} DIVISIONS
             </span>
             <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">
-              WEIGHTAGE: <span className="text-black">{totalMarks} / {currentPaper.metadata.totalMarks} PK</span>
+              WEIGHTAGE: <span className="text-black">{totalMarks} / {currentPaper.metadata.totalMarks} Marks</span>
             </span>
           </div>
           <Tooltip>

@@ -6,9 +6,21 @@ import path from 'path';
 const CONTENT_PATH = path.join(process.cwd(), 'src/content/papers');
 
 export async function POST(req: Request) {
+    // Check if we are on a read-only filesystem (Netlify production)
+    const isProduction = process.env.NETLIFY || process.env.NODE_ENV === 'production';
+
     try {
         const body = await req.json();
+        console.log('POST /api/papers - Request body received');
         const { examName, subject, class: className, data } = body;
+
+        if (isProduction) {
+            return NextResponse.json({
+                success: true,
+                message: "Sync disabled in production (Read-only filesystem). Paper saved to local session.",
+                isLocalOnly: true
+            });
+        }
 
         if (!examName || !subject || !className || !data) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -50,12 +62,17 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
+    console.log('GET /api/papers - Request received');
     try {
         const { searchParams } = new URL(req.url);
         const subject = searchParams.get('subject');
         const className = searchParams.get('class');
 
+        console.log('GET /api/papers - Parameters:', { subject, className });
+        console.log('GET /api/papers - Loading collection from:', path.join(process.cwd(), 'src/content/papers'));
+
         let papers = getCollectionData<any>('papers');
+        console.log(`GET /api/papers - Found ${papers.length} papers`);
 
         if (subject) {
             papers = papers.filter(p => p.subject === subject);

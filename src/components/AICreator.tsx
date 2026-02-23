@@ -90,19 +90,21 @@ export function AICreator() {
         examName: `${settings.subject} Examination`,
       });
 
+      const formData = new FormData();
+      formData.append('contextText', contextText);
+      formData.append('subject', settings.subject);
+      formData.append('classOrCourse', settings.classOrCourse);
+      formData.append('difficulty', settings.difficulty);
+      formData.append('questionCount', settings.questionCount.toString());
+      formData.append('language', settings.language);
+
+      contextFiles.forEach((file) => {
+        formData.append('files', file);
+      });
+
       const response = await fetch('/api/generate-questions', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contextText,
-          subject: settings.subject,
-          classOrCourse: settings.classOrCourse,
-          difficulty: settings.difficulty,
-          questionCount: settings.questionCount,
-          language: settings.language,
-        }),
+        body: formData,
       });
 
       if (!response.ok) {
