@@ -169,7 +169,7 @@ export default function PricingPage() {
                     </div>
                     <p className="text-slate-500 mb-8 max-w-xl mx-auto font-medium">For colleges and large coaching networks requiring multiple faculty accounts, shared libraries, and SLA support.</p>
                     <Button asChild variant="ghost" className="text-black font-black uppercase tracking-widest text-xs hover:bg-transparent hover:underline hover:text-black rounded-none">
-                        <Link href="mailto:validatoritinfoacademy@gmail.com">Contact Sales &rarr;</Link>
+                        <Link href="mailto:spwebsmiths@gmail.com">Contact Sales &rarr;</Link>
                     </Button>
                 </div>
 
