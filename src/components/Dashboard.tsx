@@ -41,10 +41,10 @@ import {
   Clock,
   BookOpen,
   Library,
+  Save,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
-import { LimitReachedModal } from '@/components/dashboard/LimitReachedModal';
 
 export function Dashboard() {
   const router = useRouter();
@@ -66,7 +66,6 @@ export function Dashboard() {
 
     initAuth();
 
-    // Listen for logout
     if (typeof window !== 'undefined' && (window as any).netlifyIdentity) {
       (window as any).netlifyIdentity.on("logout", () => router.push("/login"));
     }
@@ -81,34 +80,34 @@ export function Dashboard() {
   const { papers, createPaper, deletePaper, duplicatePaper, loadPaper } = usePaperStore();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [paperToDelete, setPaperToDelete] = useState<string | null>(null);
-  const [dbPapers, setDbPapers] = useState<any[]>([]);
-  const [isLoadingDb, setIsLoadingDb] = useState(false);
-  const [activeTab, setActiveTab] = useState('local');
-  const [isPurchasingExtra, setIsPurchasingExtra] = useState(false);
+  const [workspacePapers, setWorkspacePapers] = useState<any[]>([]);
+  const [isLoadingWorkspace, setIsLoadingWorkspace] = useState(false);
+  const [isSyncing, setIsSyncing] = useState<string | null>(null);
 
-  const fetchDbPapers = async () => {
-    setIsLoadingDb(true);
+  const fetchWorkspacePapers = async () => {
+    setIsLoadingWorkspace(true);
     try {
       const res = await fetch('/api/papers');
-      if (!res.ok) throw new Error('Failed to fetch from bank');
+      if (!res.ok) throw new Error('Failed to fetch from workspace');
       const data = await res.json();
-      setDbPapers(data);
+      setWorkspacePapers(data);
     } catch (err) {
       console.error(err);
+      toast.error("Failed to sync workspace papers");
     } finally {
-      setIsLoadingDb(false);
+      setIsLoadingWorkspace(false);
     }
   };
 
   useEffect(() => {
-    fetchDbPapers();
+    fetchWorkspacePapers();
   }, []);
 
   if (isInitializing) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center text-black">
         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 animate-pulse">
-          Initializing Secure Session...
+          Synchronizing Workspace...
         </div>
       </div>
     );
@@ -116,7 +115,7 @@ export function Dashboard() {
 
   if (!user) return null;
 
-  const handleLaunchDbPaper = (paperRecord: any) => {
+  const handleLaunchWorkspacePaper = (paperRecord: any) => {
     const paperData = paperRecord.data as QuestionPaper;
     usePaperStore.setState((state) => ({
       papers: state.papers.find(p => p.id === paperData.id)
@@ -128,7 +127,6 @@ export function Dashboard() {
   };
 
   const handleCreatePaper = (aiAssisted: boolean = false) => {
-    // Limits are now removed or managed via DecapCMS
     const paperId = createPaper(aiAssisted);
     if (aiAssisted) {
       router.push(`/create-with-ai?paperId=${paperId}`);
@@ -142,82 +140,68 @@ export function Dashboard() {
     router.push(`/builder/${paper.id}`);
   };
 
-  const handleDuplicatePaper = (paperId: string) => {
-    const userPlan = user?.app_metadata?.plan || 'FREE';
-    const totalPapers = papers.length + dbPapers.length;
+  const syncPaperToWorkspace = async (paper: QuestionPaper) => {
+    setIsSyncing(paper.id);
+    try {
+      const response = await fetch('/api/papers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          examName: paper.metadata.examName || 'Untitled Paper',
+          subject: paper.metadata.subject || 'General',
+          class: paper.metadata.classOrCourse || 'All Classes',
+          data: paper
+        })
+      });
 
-    // Check limit before duplicating
-    if ((userPlan === 'FREE' || userPlan === 'UNSET') && totalPapers >= 3 && (user?.extraPapersAvailable || 0) <= 0) {
-      toast.error("Free plan limit reached (3 papers). Upgrade to create more.");
-      setIsPurchasingExtra(true);
-      return;
-    }
-
-    const newId = duplicatePaper(paperId);
-    if (newId) {
-      loadPaper(newId);
-      router.push(`/builder/${newId}`);
+      if (!response.ok) throw new Error('Failed to sync');
+      toast.success('Paper synced to Workspace!');
+      fetchWorkspacePapers();
+    } catch (err) {
+      console.error(err);
+      toast.error('Sync failed');
+    } finally {
+      setIsSyncing(null);
     }
   };
 
-  const handleDeletePaper = (paperId: string) => {
-    setPaperToDelete(paperId);
-    setDeleteDialogOpen(true);
-  };
-
-  const confirmDelete = () => {
-    if (paperToDelete) {
-      deletePaper(paperToDelete);
-      setPaperToDelete(null);
-    }
-    setDeleteDialogOpen(false);
-  };
-
-  const sortedPapers = [...papers].sort(
+  const sortedDrafts = [...papers].sort(
     (a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );
 
   return (
     <div className="min-h-screen bg-white">
-      <LimitReachedModal
-        isOpen={isPurchasingExtra}
-        onClose={() => setIsPurchasingExtra(false)}
-      />
-      <header className="border-b border-black/5 bg-white sticky top-0 z-50">
+      <header className="border-b-[3px] border-black bg-white sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-black flex items-center justify-center">
-              <FileText className="h-5 w-5 text-white" />
+            <div className="w-12 h-12 border-2 border-black bg-black flex items-center justify-center">
+              <FileText className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-black text-black tracking-tighter uppercase leading-none">PaperCraft</h1>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Workspace</p>
+              <h1 className="text-2xl font-black text-black tracking-tighter uppercase leading-none">PaperCraft</h1>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">Editorial Workspace</p>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
-            <Link href="/pricing" className="text-xs font-black text-slate-400 hover:text-black transition-colors hidden sm:block uppercase tracking-widest">
-              Pricing
-            </Link>
-
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-slate-50 rounded-lg">
-                  <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center text-white font-black text-xs">
+                <Button variant="ghost" className="flex items-center gap-2 px-2 hover:bg-slate-50 border-2 border-transparent hover:border-black rounded-none">
+                  <div className="w-8 h-8 rounded-none border-2 border-black flex items-center justify-center text-black font-black text-xs">
                     {user?.user_metadata?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
                   </div>
                   <div className="text-left hidden sm:block">
-                    <p className="text-xs font-bold leading-none text-black">{user?.user_metadata?.full_name || user?.email}</p>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-widest mt-0.5">{user?.app_metadata?.plan || 'FREE'}</p>
+                    <p className="text-xs font-black leading-none text-black">{user?.user_metadata?.full_name || user?.email}</p>
+                    <p className="text-[8px] text-slate-400 uppercase tracking-widest mt-0.5">{user?.app_metadata?.plan || 'PRO'}</p>
                   </div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 rounded-lg border-black/5">
+              <DropdownMenuContent align="end" className="w-48 rounded-none border-2 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                 <DropdownMenuItem asChild>
-                  <Link href="/pricing" className="font-bold">Upgrade Plan</Link>
+                  <Link href="/pricing" className="font-black uppercase text-[10px] tracking-widest">Upgrade / Billing</Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut()} className="text-destructive font-bold">
+                <DropdownMenuSeparator className="bg-black" />
+                <DropdownMenuItem onClick={() => signOut()} className="text-destructive font-black uppercase text-[10px] tracking-widest">
                   Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -227,205 +211,126 @@ export function Dashboard() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-12">
-        <div className="mb-12">
-          <h2 className="text-4xl font-black text-black mb-4 tracking-tighter uppercase">Dashboard</h2>
-          <p className="text-slate-500 font-medium">Manage your educational assessments with editorial precision.</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6 mb-16">
-          <Card
-            className="group cursor-pointer border-2 border-slate-100 hover:border-black hover:bg-black hover:text-white transition-all duration-300 rounded-none overflow-hidden relative"
-            onClick={() => handleCreatePaper(false)}
-          >
-            <CardContent className="p-8 flex items-center gap-6 relative z-10">
-              <div className="w-16 h-16 rounded-lg bg-black flex items-center justify-center group-hover:bg-white transition-colors duration-300">
-                <Plus className="h-8 w-8 text-white group-hover:text-black" />
-              </div>
-              <div>
-                <h3 className="font-black text-2xl tracking-tighter uppercase">New Paper</h3>
-                <p className="text-sm font-medium opacity-60">Manual design with full control</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card
-            className="group cursor-pointer border-2 border-slate-100 hover:border-black hover:bg-black hover:text-white transition-all duration-300 rounded-none overflow-hidden relative"
-            onClick={() => handleCreatePaper(true)}
-          >
-            <CardContent className="p-8 flex items-center gap-6 relative z-10">
-              <div className="w-16 h-16 rounded-lg bg-black flex items-center justify-center group-hover:bg-white transition-colors duration-300">
-                <Sparkles className="h-8 w-8 text-white group-hover:text-black" />
-              </div>
-              <div>
-                <h3 className="font-black text-2xl tracking-tighter uppercase">AI Assist</h3>
-                <p className="text-sm font-medium opacity-60">Generate papers instantly</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <Tabs defaultValue="local" className="w-full" onValueChange={setActiveTab}>
-          <div className="mb-8 flex items-center justify-between border-b border-black/5 pb-4">
-            <TabsList className="bg-transparent h-auto p-0 gap-8">
-              <TabsTrigger
-                value="local"
-                className="bg-transparent border-none p-0 text-sm font-black uppercase tracking-widest text-slate-400 data-[state=active]:text-black data-[state=active]:shadow-none relative after:absolute after:bottom-[-17px] after:left-0 after:w-full after:h-0.5 after:bg-black after:scale-x-0 data-[state=active]:after:scale-x-100 after:transition-transform"
-              >
-                Local Drafts ({papers.length})
-              </TabsTrigger>
-              <TabsTrigger
-                value="bank"
-                className="bg-transparent border-none p-0 text-sm font-black uppercase tracking-widest text-slate-400 data-[state=active]:text-black data-[state=active]:shadow-none relative after:absolute after:bottom-[-17px] after:left-0 after:w-full after:h-0.5 after:bg-black after:scale-x-0 data-[state=active]:after:scale-x-100 after:transition-transform"
-              >
-                Question Bank ({dbPapers.length})
-              </TabsTrigger>
-            </TabsList>
-            {activeTab === 'bank' && (
-              <Button variant="outline" size="sm" onClick={fetchDbPapers} disabled={isLoadingDb} className="rounded-none border-black font-black text-[10px] uppercase tracking-widest">
-                Sync Bank
-              </Button>
-            )}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16 border-b-2 border-black pb-12">
+          <div>
+            <h2 className="text-6xl font-black text-black mb-4 tracking-tighter uppercase leading-[0.8]">YOUR <br /> WORKSPACE.</h2>
+            <p className="text-xl text-slate-500 font-medium">Create, draft, and publish educational assessments.</p>
           </div>
+          <div className="flex gap-4">
+            <Button onClick={() => handleCreatePaper(true)} className="h-16 px-8 bg-black text-white hover:bg-slate-800 rounded-none border-2 border-black font-black uppercase tracking-widest text-sm flex items-center gap-3">
+              <Sparkles className="h-5 w-5" /> AI Create
+            </Button>
+            <Button onClick={() => handleCreatePaper(false)} variant="outline" className="h-16 px-8 border-2 border-black rounded-none font-black uppercase tracking-widest text-sm hover:bg-black hover:text-white flex items-center gap-3">
+              <Plus className="h-5 w-5" /> New Draft
+            </Button>
+          </div>
+        </div>
 
-          <TabsContent value="local" className="mt-0">
-            {sortedPapers.length === 0 ? (
-              <div className="py-24 text-center border-2 border-dashed border-slate-100">
-                <div className="w-16 h-16 rounded-lg bg-slate-50 flex items-center justify-center mx-auto mb-6">
-                  <BookOpen className="h-8 w-8 text-slate-300" />
-                </div>
-                <h3 className="text-xl font-black text-black mb-2 uppercase tracking-tighter">No papers yet</h3>
-                <p className="text-slate-400 font-medium mb-8">Start your first transformation from the sections above.</p>
-                <Button onClick={() => handleCreatePaper(false)} className="bg-black text-white hover:bg-slate-900 px-8 h-12 rounded-none font-bold uppercase tracking-widest">
-                  Create Paper
-                </Button>
+        <Tabs defaultValue="workspace" className="w-full">
+          <TabsList className="bg-transparent h-auto p-0 gap-8 mb-12 border-b-2 border-slate-100 w-full justify-start rounded-none">
+            <TabsTrigger
+              value="workspace"
+              className="bg-transparent border-none p-0 pb-4 text-xs font-black uppercase tracking-widest text-slate-400 data-[state=active]:text-black data-[state=active]:shadow-none relative after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-[3px] after:bg-black after:scale-x-0 data-[state=active]:after:scale-x-100 after:transition-transform rounded-none"
+            >
+              Saved Papers ({workspacePapers.length})
+            </TabsTrigger>
+            <TabsTrigger
+              value="local"
+              className="bg-transparent border-none p-0 pb-4 text-xs font-black uppercase tracking-widest text-slate-400 data-[state=active]:text-black data-[state=active]:shadow-none relative after:absolute after:bottom-[-2px] after:left-0 after:w-full after:h-[3px] after:bg-black after:scale-x-0 data-[state=active]:after:scale-x-100 after:transition-transform rounded-none"
+            >
+              Session Drafts ({papers.length})
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="workspace" className="mt-0">
+            {isLoadingWorkspace ? (
+              <div className="py-24 text-center border-2 border-dashed border-black/10">
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] animate-pulse">Reading Filesystem...</p>
+              </div>
+            ) : workspacePapers.length === 0 ? (
+              <div className="py-24 text-center border-2 border-dashed border-black/10">
+                <Library className="h-12 w-12 text-slate-200 mx-auto mb-6" />
+                <h3 className="text-xl font-black text-black mb-2 uppercase tracking-tighter">No Saved Papers</h3>
+                <p className="text-slate-400 font-medium mb-8 uppercase text-[10px] tracking-widest">Publish a draft to see it here.</p>
               </div>
             ) : (
-              <div className="grid gap-4">
-                {sortedPapers.map((paper) => {
-                  const totalMarks = calculateTotalMarks(paper);
-                  const questionCount = paper.sections.reduce((sum, s) => sum + s.questions.length, 0);
-                  return (
-                    <Card
-                      key={paper.id}
-                      className="bg-white border-slate-100 hover:border-black transition-all rounded-none cursor-pointer group"
-                      onClick={() => handleEditPaper(paper)}
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between gap-4">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="text-xl font-black text-black truncate tracking-tighter uppercase">
-                                {paper.metadata.examName || 'Untitled Paper'}
-                              </h3>
-                              {paper.isAIAssisted && (
-                                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-black/10 text-black text-[10px] font-black uppercase tracking-widest bg-slate-50">
-                                  <Sparkles className="h-3 w-3" />
-                                  AI
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
-                              {paper.metadata.subject && (
-                                <span className="text-black/60">{paper.metadata.subject}</span>
-                              )}
-                              {paper.metadata.classOrCourse && (
-                                <span>{paper.metadata.classOrCourse}</span>
-                              )}
-                              <span className="flex items-center gap-2">
-                                <Clock className="h-3 w-3" />
-                                {format(new Date(paper.updatedAt), 'MMM d, yyyy')}
-                              </span>
-                            </div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {workspacePapers.map((paperRecord) => (
+                  <div
+                    key={paperRecord.slug || paperRecord.id}
+                    className="relative group h-full flex"
+                  >
+                    <div className="absolute inset-0 bg-slate-100 border-2 border-black translate-x-1 translate-y-1 group-hover:translate-x-2 group-hover:translate-y-2 transition-transform" />
+                    <Card className="bg-white border-2 border-black rounded-none transition-all w-full flex flex-col relative z-10">
+                      <CardContent className="p-8 flex-1 flex flex-col">
+                        <div className="mb-6 flex-1">
+                          <h3 className="text-2xl font-black text-black tracking-tighter uppercase mb-2 leading-tight">
+                            {paperRecord.examName}
+                          </h3>
+                          <div className="flex flex-wrap gap-x-4 gap-y-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                            <span className="text-black">{paperRecord.subject}</span>
+                            <span>Class {paperRecord.class}</span>
+                            <span>{paperRecord.year}</span>
                           </div>
-
-                          <div className="flex items-center gap-8">
-                            <div className="hidden md:flex items-center gap-8 text-right">
-                              <div>
-                                <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-1">Sections</div>
-                                <div className="text-lg font-black text-black">{paper.sections.length}</div>
-                              </div>
-                              <div>
-                                <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-1">Marks</div>
-                                <div className="text-lg font-black text-black">{totalMarks}</div>
-                              </div>
-                            </div>
-
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                                <Button variant="ghost" size="sm" className="h-10 w-10 p-0 hover:bg-slate-50 transition-colors">
-                                  <MoreVertical className="h-5 w-5 text-slate-400" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end" className="w-48 rounded-lg border-black/5">
-                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleEditPaper(paper); }} className="font-bold">
-                                  <Edit className="h-4 w-4 mr-2" />
-                                  Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={(e) => { e.stopPropagation(); handleDuplicatePaper(paper.id); }} className="font-bold">
-                                  <Copy className="h-4 w-4 mr-2" />
-                                  Duplicate
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                  className="text-destructive font-bold"
-                                  onClick={(e) => { e.stopPropagation(); handleDeletePaper(paper.id); }}
-                                >
-                                  <Trash2 className="h-4 w-4 mr-2" />
-                                  Delete
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
+                        </div>
+                        <div className="pt-6 border-t border-black/5 flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-300 uppercase">
+                            {format(new Date(paperRecord.createdAt), 'MMM d, yyyy')}
+                          </span>
+                          <Button
+                            onClick={() => handleLaunchWorkspacePaper(paperRecord)}
+                            className="bg-black text-white hover:bg-slate-800 rounded-none h-10 px-4 font-black uppercase tracking-widest text-[10px] transition-all"
+                          >
+                            Edit
+                          </Button>
                         </div>
                       </CardContent>
                     </Card>
-                  );
-                })}
+                  </div>
+                ))}
               </div>
             )}
           </TabsContent>
 
-          <TabsContent value="bank" className="mt-0">
-            {isLoadingDb ? (
-              <div className="py-24 text-center border-2 border-dashed border-slate-100 animate-pulse">
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Synchronizing Bank...</p>
-              </div>
-            ) : dbPapers.length === 0 ? (
-              <div className="py-24 text-center border-2 border-dashed border-slate-100">
-                <div className="w-16 h-16 rounded-lg bg-slate-50 flex items-center justify-center mx-auto mb-6">
-                  <Library className="h-8 w-8 text-slate-300" />
-                </div>
-                <h3 className="text-xl font-black text-black mb-2 uppercase tracking-tighter">Bank is empty</h3>
-                <p className="text-slate-400 font-medium mb-8">Papers saved to the cloud during design will appear here.</p>
+          <TabsContent value="local" className="mt-0">
+            {sortedDrafts.length === 0 ? (
+              <div className="py-24 text-center border-2 border-dashed border-black/10">
+                <BookOpen className="h-12 w-12 text-slate-200 mx-auto mb-6" />
+                <h3 className="text-xl font-black text-black mb-2 uppercase tracking-tighter">Drafts Area Clean</h3>
+                <p className="text-slate-400 font-medium mb-8 uppercase text-[10px] tracking-widest">Start a new creation to populate session drafts.</p>
               </div>
             ) : (
               <div className="grid gap-4">
-                {dbPapers.map((paperRecord) => (
-                  <Card
-                    key={paperRecord.id}
-                    className="bg-white border-slate-100 hover:border-black transition-all rounded-none cursor-default group"
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between gap-4">
-                        <div className="flex-1 min-w-0">
-                          <h3 className="text-xl font-black text-black truncate tracking-tighter uppercase mb-2">
-                            {paperRecord.examName}
-                          </h3>
-                          <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
-                            <span className="text-black/60">{paperRecord.subject}</span>
-                            <span>{paperRecord.class}</span>
-                            <span>{paperRecord.year}</span>
-                            <span className="flex items-center gap-2">
-                              <Clock className="h-3 w-3" />
-                              Saved {format(new Date(paperRecord.createdAt), 'MMM d, yyyy')}
-                            </span>
-                          </div>
+                {sortedDrafts.map((paper) => (
+                  <Card key={paper.id} className="bg-white border-2 border-black hover:bg-slate-50 transition-all rounded-none group">
+                    <CardContent className="p-6 flex items-center justify-between gap-6">
+                      <div className="flex-1 min-w-0" onClick={() => handleEditPaper(paper)} className="cursor-pointer">
+                        <div className="flex items-center gap-3 mb-1">
+                          <h3 className="text-xl font-black text-black leading-none tracking-tighter uppercase">{paper.metadata.examName || 'Untitled'}</h3>
+                          {paper.isAIAssisted && <Sparkles className="h-4 w-4 text-black" />}
                         </div>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                          Last Updated {format(new Date(paper.updatedAt), 'HH:mm')} • {calculateTotalMarks(paper)} Marks
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-3">
                         <Button
-                          className="bg-black text-white hover:bg-slate-900 rounded-none h-12 px-6 font-bold uppercase tracking-widest text-xs transition-all"
-                          onClick={() => handleLaunchDbPaper(paperRecord)}
+                          variant="outline"
+                          size="sm"
+                          disabled={isSyncing === paper.id}
+                          onClick={() => syncPaperToWorkspace(paper)}
+                          className="h-10 border-2 border-black rounded-none font-black uppercase text-[10px] tracking-widest hover:bg-black hover:text-white"
                         >
-                          Launch Builder
+                          <Save className="h-4 w-4 mr-2" />
+                          {isSyncing === paper.id ? 'Syncing...' : 'Publish'}
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => { setPaperToDelete(paper.id); setDeleteDialogOpen(true); }}
+                          className="h-10 w-10 hover:bg-red-50 hover:text-red-600 rounded-none border-2 border-transparent hover:border-red-600"
+                        >
+                          <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
                     </CardContent>
@@ -438,17 +343,20 @@ export function Dashboard() {
       </main>
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent className="rounded-none border-2 border-black">
+        <AlertDialogContent className="rounded-none border-2 border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-2xl font-black tracking-tighter uppercase">Confirm Deletion</AlertDialogTitle>
             <AlertDialogDescription className="font-medium text-slate-500">
-              This will permanently remove the paper from your local drafts. This action is irreversible.
+              Remove this paper from session drafts? This will not affect copies saved to Workspace.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="rounded-none border-black/10 font-bold uppercase tracking-wider text-xs">Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDelete} className="bg-black text-white hover:bg-slate-900 rounded-none font-bold uppercase tracking-wider text-xs">
-              Confirm Delete
+            <AlertDialogCancel className="rounded-none border-2 border-black/10 font-black uppercase tracking-widest text-[10px]">Back</AlertDialogCancel>
+            <AlertDialogAction onClick={() => {
+              if (paperToDelete) deletePaper(paperToDelete);
+              setDeleteDialogOpen(false);
+            }} className="bg-black text-white hover:bg-slate-900 rounded-none font-black uppercase tracking-widest text-[10px]">
+              Erase Draft
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -28,7 +28,6 @@ import {
   Upload,
   FileText,
   Sparkles,
-  Image as ImageIcon,
   AlertCircle,
   Loader2,
 } from 'lucide-react';
@@ -43,11 +42,9 @@ export function AICreator() {
 
   const [step, setStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [referenceImage, setReferenceImage] = useState<string | null>(null);
   const [contextText, setContextText] = useState('');
   const [contextFiles, setContextFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const [settings, setSettings] = useState({
     subject: '',
@@ -66,17 +63,6 @@ export function AICreator() {
       }
     }
   });
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setReferenceImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleContextFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -195,85 +181,13 @@ export function AICreator() {
             </div>
           </div>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            Step {step} of 3
+            Step {step} of 2
           </div>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-6 py-8">
         {step === 1 && (
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">Reference Image (Optional)</h2>
-              <p className="text-slate-600">
-                Upload an existing question paper image to help AI understand the structure
-              </p>
-            </div>
-
-            <Card className="border-2 border-dashed border-slate-200 hover:border-purple-300 transition-colors">
-              <CardContent className="p-8">
-                {referenceImage ? (
-                  <div className="space-y-4">
-                    <img
-                      src={referenceImage}
-                      alt="Reference"
-                      className="max-h-64 mx-auto rounded-lg shadow-lg"
-                    />
-                    <div className="flex justify-center">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setReferenceImage(null)}
-                      >
-                        Remove Image
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    className="text-center cursor-pointer"
-                    onClick={() => imageInputRef.current?.click()}
-                  >
-                    <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-                      <ImageIcon className="h-8 w-8 text-purple-600" />
-                    </div>
-                    <p className="text-slate-700 font-medium mb-1">Upload Reference Image</p>
-                    <p className="text-sm text-slate-500">PNG, JPG or PDF up to 10MB</p>
-                  </div>
-                )}
-                <input
-                  ref={imageInputRef}
-                  type="file"
-                  accept="image/*,.pdf"
-                  className="hidden"
-                  onChange={handleImageUpload}
-                />
-              </CardContent>
-            </Card>
-
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex gap-3">
-              <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-              <div className="text-sm">
-                <p className="font-medium text-amber-800">How AI uses this image:</p>
-                <ul className="text-amber-700 mt-1 space-y-1">
-                  <li>• Detects paper structure (sections, question types)</li>
-                  <li>• Infers marks distribution if visible</li>
-                  <li>• Identifies question formatting patterns</li>
-                  <li>• Will not guess missing information</li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="flex justify-end">
-              <Button onClick={() => setStep(2)}>
-                Continue
-                <ArrowRight className="h-4 w-4 ml-1" />
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {step === 2 && (
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-slate-900 mb-2">Provide Context</h2>
@@ -337,12 +251,8 @@ export function AICreator() {
               </CardContent>
             </Card>
 
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(1)}>
-                <ArrowLeft className="h-4 w-4 mr-1" />
-                Back
-              </Button>
-              <Button onClick={() => setStep(3)}>
+            <div className="flex justify-end">
+              <Button onClick={() => setStep(2)}>
                 Continue
                 <ArrowRight className="h-4 w-4 ml-1" />
               </Button>
@@ -350,7 +260,8 @@ export function AICreator() {
           </div>
         )}
 
-        {step === 3 && (
+
+        {step === 2 && (
           <div className="space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-slate-900 mb-2">Generation Settings</h2>
@@ -451,7 +362,7 @@ export function AICreator() {
             </div>
 
             <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setStep(2)}>
+              <Button variant="outline" onClick={() => setStep(1)}>
                 <ArrowLeft className="h-4 w-4 mr-1" />
                 Back
               </Button>

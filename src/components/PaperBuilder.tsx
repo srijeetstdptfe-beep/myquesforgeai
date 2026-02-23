@@ -35,6 +35,7 @@ import {
 import { createPortal } from 'react-dom';
 import { QuestionBlockCard } from '@/components/question-blocks/QuestionBlockCard';
 import { SectionCard } from '@/components/builder/BuilderCanvas';
+import { toast } from 'sonner';
 import {
   Tooltip,
   TooltipContent,
@@ -178,34 +179,36 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
     }
   };
 
-  const handleSave = () => {
-    savePaper();
-  };
-
-  const saveToBank = async () => {
+  const handleSave = async () => {
     if (!currentPaper) return;
     setIsSavingToBank(true);
     try {
+      // 1. Save to local storage (Zustand)
+      savePaper();
+
+      // 2. Sync to Workspace (JSON Files)
       const response = await fetch('/api/papers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          examName: currentPaper.metadata.examName || 'Untitled',
+          examName: currentPaper.metadata.examName || 'Untitled Paper',
           subject: currentPaper.metadata.subject || 'General',
-          class: currentPaper.metadata.classOrCourse || 'Any',
+          class: currentPaper.metadata.classOrCourse || 'All Classes',
           data: currentPaper
         })
       });
 
-      if (!response.ok) throw new Error('Failed to save to bank');
-      alert('Paper saved to Question Bank successfully!');
+      if (!response.ok) throw new Error('Failed to sync with workspace');
+      toast.success('Paper saved to Workspace successfully!');
     } catch (error) {
       console.error(error);
-      alert('Failed to save to Question Bank');
+      toast.error('Saved locally, but failed to sync with workspace');
     } finally {
       setIsSavingToBank(false);
     }
   };
+
+  // Removed saveToBank in favor of integrated handleSave
 
   const fetchPyqs = async () => {
     setIsLoadingPyqs(true);
@@ -290,11 +293,11 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
                   onClick={handleOpenPyq}
                   className="hidden md:flex h-10 border-2 border-black rounded-none font-black uppercase tracking-widest text-[10px] items-center gap-2 hover:bg-black hover:text-white transition-all"
                 >
-                  <span className="text-sm">↺</span> PYQ Bank
+                  <span className="text-sm">↺</span> Workspace
                 </Button>
               </TooltipTrigger>
               <TooltipContent className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[10px]">
-                Load Previous Year Questions from Bank
+                Load Papers from Workspace
               </TooltipContent>
             </Tooltip>
 
@@ -349,22 +352,7 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
               </TooltipContent>
             </Tooltip>
 
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  onClick={saveToBank}
-                  disabled={isSavingToBank}
-                  className="h-10 border-2 border-black bg-white text-black hover:bg-black hover:text-white rounded-none font-black uppercase tracking-widest text-[10px] px-4 transition-all"
-                >
-                  {isSavingToBank ? 'SAVING...' : 'TO BANK'}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent className="bg-black text-white rounded-none font-bold uppercase tracking-widest text-[10px]">
-                Deploy this paper to Global Question Bank
-              </TooltipContent>
-            </Tooltip>
+            {/* Legacy bank button removed */}
           </div>
         </header>
 
@@ -442,19 +430,19 @@ export function PaperBuilder({ paperId }: PaperBuilderProps) {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
             <div className="bg-white rounded-none border-2 border-black shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] w-full max-w-2xl max-h-[80vh] flex flex-col">
               <div className="flex items-center justify-between p-6 border-b-2 border-black">
-                <h2 className="text-xl font-black uppercase tracking-tighter">Previous Year Papers</h2>
+                <h2 className="text-xl font-black uppercase tracking-tighter">Workspace Papers</h2>
                 <Button variant="ghost" size="sm" onClick={() => setPyqModalOpen(false)} className="hover:bg-black hover:text-white rounded-none">✕</Button>
               </div>
               <div className="p-4 bg-slate-50 border-b-2 border-black">
                 <p className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                  Filtering: <span className="text-black">{currentPaper.metadata.subject || 'ALL'}</span> • <span className="text-black">{currentPaper.metadata.classOrCourse || 'ALL'}</span>
+                  Workspace: <span className="text-black">{currentPaper.metadata.subject || 'ALL'}</span> • <span className="text-black">{currentPaper.metadata.classOrCourse || 'ALL'}</span>
                 </p>
               </div>
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {isLoadingPyqs ? (
                   <div className="text-center py-8 font-black uppercase tracking-widest animate-pulse">Synchronizing...</div>
                 ) : pyqList.length === 0 ? (
-                  <div className="text-center py-8 text-slate-400 font-bold uppercase tracking-widest">No papers found in bank.</div>
+                  <div className="text-center py-8 text-slate-400 font-bold uppercase tracking-widest">No papers found in Workspace.</div>
                 ) : (
                   pyqList.map((paper) => (
                     <div key={paper.id} className="bg-white border-2 border-black p-5 hover:bg-slate-50 transition-colors flex items-center justify-between group">

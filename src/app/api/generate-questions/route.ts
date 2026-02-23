@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
       Context Material:
       """
-      ${contextText.slice(0, 8000)}
+      ${contextText.slice(0, 30000)}
       """
 
       You must generate a valid JSON array of question objects. 
