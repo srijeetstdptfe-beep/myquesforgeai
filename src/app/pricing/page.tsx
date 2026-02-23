@@ -142,21 +142,21 @@ export default function PricingPage() {
                                 <MessageCircle className="h-5 w-5" />
                             </div>
                             <span className="text-xs font-black uppercase tracking-widest">WhatsApp</span>
-                            <span className="text-sm text-slate-500">+91 95452 14074</span>
+                            <span className="text-sm text-slate-500">+91 82085 93432</span>
                         </a>
-                        <a href="mailto:validatoritinfoacademy@gmail.com" className="flex flex-col items-center gap-3 p-6 border border-black/10 hover:border-black transition-colors group">
+                        <a href="mailto:spwebsmiths@gmail.com" className="flex flex-col items-center gap-3 p-6 border border-black/10 hover:border-black transition-colors group">
                             <div className="w-12 h-12 bg-black text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <Mail className="h-5 w-5" />
                             </div>
                             <span className="text-xs font-black uppercase tracking-widest">Email</span>
-                            <span className="text-sm text-slate-500">validatoritinfoacademy@gmail.com</span>
+                            <span className="text-sm text-slate-500">spwebsmiths@gmail.com</span>
                         </a>
                         <a href="tel:+919545214074" className="flex flex-col items-center gap-3 p-6 border border-black/10 hover:border-black transition-colors group">
                             <div className="w-12 h-12 bg-black text-white flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <Phone className="h-5 w-5" />
                             </div>
                             <span className="text-xs font-black uppercase tracking-widest">Call</span>
-                            <span className="text-sm text-slate-500">+91 95452 14074</span>
+                            <span className="text-sm text-slate-500">+91 82085 93432</span>
                         </a>
                     </div>
                 </div>
