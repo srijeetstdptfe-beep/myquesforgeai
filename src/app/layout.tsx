@@ -18,9 +18,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PaperCraft - Question Paper Builder",
-  description: "Visual question paper builder for educators. Create exam-ready papers with drag & drop, manual design, or AI assistance.",
+  metadataBase: new URL("https://papercraft-editorial.netlify.app"),
+  title: {
+    default: "PaperCraft - Professional Question Paper Builder for Educators",
+    template: "%s | PaperCraft"
+  },
+  description: "Advanced visual question paper builder for educators. Create exam-ready papers with AI-assisted generation, drag-and-drop manual design, and multi-language support (Hindi, Marathi, English).",
+  keywords: ["Question Paper Builder", "Exam Paper Creator", "AI Question Generator", "Marathi Question Paper", "Hindi Exam Software", "Educational Assessment Tools"],
+  openGraph: {
+    title: "PaperCraft - Question Paper Builder",
+    description: "Visual question paper builder for educators. Create exam-ready papers with AI assistance.",
+    url: "https://papercraft-editorial.netlify.app",
+    siteName: "PaperCraft",
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "PaperCraft - Question Paper Builder",
+    description: "Visual question paper builder for educators. Create exam-ready papers with AI assistance.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  }
 };
+
+import { SoftareApplicationSchema, OrganizationSchema } from "@/components/SEO/StructuredData";
 
 export default function RootLayout({
   children,
@@ -48,6 +72,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <SoftareApplicationSchema />
+        <OrganizationSchema />
         <AuthProvider>
           <div className="flex flex-col min-h-screen">
             <main className="flex-grow">
