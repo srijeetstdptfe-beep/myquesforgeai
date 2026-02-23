@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://papercraft-editorial.netlify.app"),
+  metadataBase: new URL("https://quesforgeai-in.netlify.app"),
   title: {
     default: "PaperCraft - Professional Question Paper Builder for Educators",
     template: "%s | PaperCraft"
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "PaperCraft - Question Paper Builder",
     description: "Visual question paper builder for educators. Create exam-ready papers with AI assistance.",
-    url: "https://papercraft-editorial.netlify.app",
+    url: "https://quesforgeai-in.netlify.app",
     siteName: "PaperCraft",
     locale: "en_IN",
     type: "website",
@@ -41,6 +41,9 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  verification: {
+    google: "YOUR_GSC_CODE_HERE", // Replace with your actual verification code
   }
 };
 

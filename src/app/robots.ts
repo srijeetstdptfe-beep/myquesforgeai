@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
             allow: '/',
             disallow: ['/api/', '/dashboard/', '/builder/'],
         },
-        sitemap: 'https://papercraft-editorial.netlify.app/sitemap.xml',
+        sitemap: 'https://quesforgeai-in.netlify.app/sitemap.xml',
     };
 }

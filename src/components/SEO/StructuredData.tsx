@@ -34,8 +34,8 @@ export function OrganizationSchema() {
         '@context': 'https://schema.org',
         '@type': 'Organization',
         name: 'PaperCraft Editorial Systems',
-        url: 'https://papercraft-editorial.netlify.app',
-        logo: 'https://papercraft-editorial.netlify.app/logo.png', // Assuming a logo exists or will be added
+        url: 'https://quesforgeai-in.netlify.app',
+        logo: 'https://quesforgeai-in.netlify.app/logo.png', // Assuming a logo exists or will be added
         contactPoint: {
             '@type': 'ContactPoint',
             telephone: '+91-8208593432',
