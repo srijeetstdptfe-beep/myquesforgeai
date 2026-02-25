@@ -98,14 +98,18 @@ export async function POST(req: Request) {
       1. Generate exactly ${questionCount} questions.
       2. Vary the question types suitable for the content (include MCQs, Short Answer, Long Answer).
       3. Questions must be based ONLY on the provided context.
-      4. Return ONLY the JSON array. Do not include markdown code blocks like \`\`\`json. Just the raw JSON.
+      4. Use valid UTF-8 script characters for the target language (e.g., Devanagari for Hindi).
+      5. DO NOT use symbols or garbage characters. If a word or concept cannot be translated or read, skip it or use the original term in brackets.
+      6. Return ONLY the JSON array. Do not include markdown code blocks like \`\`\`json. Just the raw JSON.
     `;
 
         const chatCompletion = await groq.chat.completions.create({
             messages: [
                 {
                     role: 'system',
-                    content: 'You are a JSON-only response bot. You must return strictly a JSON array of questions. No other text.',
+                    content: `You are a JSON-only response bot. You must return strictly a JSON array of questions.
+                    IMPORTANT: If the target language is ${language}, you MUST use the correct ${language} script characters (e.g., Devanagari for Hindi).
+                    NO OTHER TEXT.`,
                 },
                 {
                     role: 'user',
@@ -132,7 +136,10 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'Failed to generate valid JSON' }, { status: 500 });
         }
 
-        return NextResponse.json({ questions });
+        // Diagnostic info for the user to see if OCR/Extraction failed
+        const debugText = contextText.length > 500 ? contextText.substring(0, 500) + '...' : contextText;
+
+        return NextResponse.json({ questions, debugExtractedText: debugText });
     } catch (error: any) {
         const message = error.message || String(error);
         console.error('Final generating questions error:', message);
