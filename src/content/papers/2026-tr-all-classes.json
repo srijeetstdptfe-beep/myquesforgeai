@@ -1,0 +1,215 @@
+{
+  "examName": "Tr Examination",
+  "subject": "Tr",
+  "class": "All Classes",
+  "year": 2026,
+  "language": "hindi",
+  "duration": "3 Hours",
+  "totalMarks": 100,
+  "data": {
+    "id": "0df5ee15-39b2-49b7-8ba1-a1544f340c5b",
+    "metadata": {
+      "institutionName": "",
+      "examName": "Tr Examination",
+      "subject": "Tr",
+      "classOrCourse": "",
+      "date": "2026-02-25",
+      "duration": "3 Hours",
+      "totalMarks": 100,
+      "instructions": "Attempt all questions.\nWrite neatly and legibly.\nMarks are indicated against each question.",
+      "language": "hindi"
+    },
+    "sections": [
+      {
+        "id": "3d4fe7f2-0fd5-45b8-9856-0f73b87197f1",
+        "title": "सेक्शन ए",
+        "description": "",
+        "questions": [
+          {
+            "id": "e8c0bdb3-00b6-47f5-9c03-a7dab21e34c7",
+            "type": "mcq-single",
+            "questionText": "<p>जीवित जीवों के कोशिकीय नाभिक का कौन सा घटक वंशानुगत लक्षणों को ले जाता है?</p>",
+            "marks": 1,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "options": [
+              {
+                "text": "डीएनए",
+                "isCorrect": true,
+                "id": "a19534be-1d3e-484d-b205-ba7e24dfa870"
+              },
+              {
+                "text": "आरएनए",
+                "isCorrect": false,
+                "id": "76896d24-02fd-4728-86b9-e4274327e2b6"
+              },
+              {
+                "text": "प्रोटीन",
+                "isCorrect": false,
+                "id": "0286979d-f186-49ec-9ca0-c5a238ee4a3d"
+              },
+              {
+                "text": "क्रोमोसोम",
+                "isCorrect": false,
+                "id": "2c134436-31d4-4d59-afd5-226b91f81192"
+              }
+            ],
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "6bf3310b-943c-41ad-88ae-4c0f7d24956b",
+            "type": "short-answer",
+            "questionText": "<p>माता-पिता से संतान को शारीरिक और मानसिक लक्षणों के स्थानांतरण की प्रक्रिया को क्या कहा जाता है?</p>",
+            "marks": 2,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "f5683823-2f1b-4624-919b-16bfb162fa46",
+            "type": "mcq-multiple",
+            "questionText": "<p>निम्नलिखित में से कौन डीएनए अणु के घटक हैं?</p>",
+            "marks": 2,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "options": [
+              {
+                "text": "न्यूक्लियोटाइड",
+                "isCorrect": true,
+                "id": "003ed370-fc82-48d8-af5e-b3fcfb65201b"
+              },
+              {
+                "text": "अमीनो एसिड",
+                "isCorrect": false,
+                "id": "96f5e3be-43fd-4c00-b6dd-9261c8e18fbd"
+              },
+              {
+                "text": "प्रोटीन",
+                "isCorrect": false,
+                "id": "b336e451-8a3e-45d3-b166-e64fe2e94201"
+              },
+              {
+                "text": "कार्बोहाइड्रेट",
+                "isCorrect": false,
+                "id": "28877964-22ce-48b9-a2d3-4b53c0430d39"
+              }
+            ],
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "663008ac-0d5a-4c17-b181-745bf47aac4e",
+            "type": "long-answer",
+            "questionText": "<p>वंशानुगतता और वंशानुगत परिवर्तन की अवधारणा को समझाएं। जोहान ग्रेगोर मेंडल ने जेनेटिक्स के क्षेत्र में क्या योगदान दिया?</p>",
+            "marks": 5,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "3a66e358-3d05-48b8-ba18-54aff618bef2",
+            "type": "fill-blanks",
+            "questionText": "<p>वंशानुगतता का विज्ञान _______________ विकारों के निदान, उपचार और रोकथाम के लिए उपयोगी है।</p>",
+            "marks": 1,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "blanks": [
+              ""
+            ],
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "251cb075-ffdf-4873-8c92-ef48d7ff80bc",
+            "type": "true-false",
+            "questionText": "<p>सेंट्रल डॉगमा कहता है कि प्रोटीन डीएनए से सीधे संश्लेषित होते हैं।</p>",
+            "marks": 1,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "correctAnswer": true,
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "4cd8e907-d75b-4388-a614-8ded45dc7ea3",
+            "type": "short-answer",
+            "questionText": "<p>आरएनए संश्लेषण की प्रक्रिया को क्या कहा जाता है?</p>",
+            "marks": 2,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "e5d41b36-41cf-4394-af39-10e5c39e547d",
+            "type": "mcq-single",
+            "questionText": "<p>किसने बैक्टीरियल कोशिकाओं में डीएनए की मदद से प्रोटीन संश्लेषण की प्रक्रिया के लिए एक मॉडल प्रस्तावित किया?</p>",
+            "marks": 1,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "options": [
+              {
+                "text": "फ्रांकोइस जैकब और जैक मोनाड",
+                "isCorrect": true,
+                "id": "2169475b-193e-4790-93f8-92dcf4f37db3"
+              },
+              {
+                "text": "जोहान ग्रेगोर मेंडल",
+                "isCorrect": false,
+                "id": "3ddedaa6-4d13-4fe8-9da1-2cce514f4148"
+              },
+              {
+                "text": "ह्यूगो डी व्रीस",
+                "isCorrect": false,
+                "id": "783e967e-9439-48e6-8f72-cec12e313cd3"
+              },
+              {
+                "text": "वाल्टर और सटन",
+                "isCorrect": false,
+                "id": "d3d1a6fc-7ab0-4ed3-b579-58499c5da760"
+              }
+            ],
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "bd6a9916-ce17-4f19-ac93-a6cf0509ab28",
+            "type": "match-following",
+            "questionText": "<p>निम्नलिखित वैज्ञानिकों को उनके योगदान से मिलाएं:</p>",
+            "marks": 2,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "matchPairs": [
+              {
+                "left": "जोहान ग्रेगोर मेंडल",
+                "right": "आधुनिक जेनेटिक्स के पioneer",
+                "id": "95afd3bf-e6f6-47fd-b526-4835c7d9c424"
+              },
+              {
+                "text": "ह्यूगो डी व्रीस",
+                "right": "म्यूटेशनल सिद्धांत",
+                "id": "794e3a10-9e62-4317-a82c-7d0f90581b7d"
+              },
+              {
+                "left": "वाल्टर और सटन",
+                "right": "जोड़े गए क्रोमोसोम की खोज",
+                "id": "14a9e7f5-fa53-431a-b9f1-cbf1f7297746"
+              }
+            ],
+            "difficulty": "मध्यम"
+          },
+          {
+            "id": "34d2e8da-4dfc-4a6d-9108-97eb04decc75",
+            "type": "long-answer",
+            "questionText": "<p>लिप्यंतरण, अनुवाद और स्थानांतरण की प्रक्रिया को समझाएं। वे कोशिका के कार्य में कैसे योगदान करते हैं?</p>",
+            "marks": 5,
+            "language": "हिंदी",
+            "isAIGenerated": false,
+            "difficulty": "मध्यम"
+          }
+        ],
+        "totalMarks": 22,
+        "instructions": ""
+      }
+    ],
+    "createdAt": "2026-02-25T11:11:49.008Z",
+    "updatedAt": "2026-02-25T11:29:26.921Z",
+    "isAIAssisted": true
+  },
+  "createdAt": "2026-02-25T11:29:27.209Z"
+}

@@ -79,53 +79,83 @@ export async function POST(req: Request) {
             language = body.language || 'english';
         }
 
-        console.log('AI Generation Request:', { subject, classOrCourse, difficulty, questionCount, language, contextLength: contextText.length });
+        // SUPER AGGRESSIVE SCRIPT FILTER: Sentence-level validation
+        const sanitizeScript = (text: string) => {
+            // Split by lines or double spaces to get meaningful segments
+            const segments = text.split(/\r?\n|\s{3,}/);
 
-        if (!contextText || contextText.trim().length === 0) {
-            return NextResponse.json({ error: 'Context text is required. Please provide text or upload a valid document.' }, { status: 400 });
+            return segments.map(segment => {
+                // Remove obvious non-whitelist chars first
+                const whitelistRegex = /[a-zA-Z0-9\s\u0900-\u097F.,?!:()\[\]\-]/g;
+                const matches = segment.match(whitelistRegex) || [];
+                const cleaned = matches.join('').trim();
+
+                if (cleaned.length < 5) return ""; // Ignore tiny fragments
+
+                // VALIDATION: Does this segment have actual Hindi or English words?
+                // Garbage often looks like lone letters "G M 8 6" or symbols.
+                const hasHindi = /[\u0900-\u097F]/.test(cleaned);
+                const englishWords = cleaned.match(/[a-zA-Z]{3,}/g) || []; // English words at least 3 chars long
+                const numbers = cleaned.match(/[0-9]+/g) || [];
+
+                // If it has Hindi, it's likely part of the real content
+                if (hasHindi) return cleaned;
+
+                // If it has multi-character English words, it might be the header/footer/technical terms
+                if (englishWords.length > 0) return cleaned;
+
+                // If it's just numbers and lone letters like "8 G M 6", it's garbage
+                return "";
+            }).filter(s => s.length > 0).join('\n');
+        };
+
+        const sanitizedContext = sanitizeScript(contextText);
+
+        console.log('AI Generation Request:', {
+            subject,
+            classOrCourse,
+            difficulty,
+            questionCount,
+            language,
+            originalLength: contextText.length,
+            sanitizedLength: sanitizedContext.length
+        });
+
+        if (!sanitizedContext || sanitizedContext.trim().length < 50) {
+            // If the filter was too aggressive or the PDF is truly unreadable
+            return NextResponse.json({
+                error: 'The PDF reading failed. Most of the document appears to be symbols or unreadable characters.',
+                detail: 'This usually happens with scanned PDFs or non-standard fonts. Try copying the text manually into the "Context Text" box.'
+            }, { status: 400 });
         }
 
-        // Permissions and Limits removed for Git-based architecture
-
-
         const prompt = `
-      You are an expert teacher and question paper setter.
-      Generate ${questionCount} questions for a ${subject} exam (Class/Course: ${classOrCourse}).
-      Difficulty Level: ${difficulty}.
+      You are an expert teacher. Generate ${questionCount} questions for a ${subject} exam.
       Language: ${language}.
+      Class: ${classOrCourse}.
 
-      Context Material:
+      CONTEXT (CLEANED OF GARBAGE):
       """
-      ${contextText.slice(0, 30000)}
+      ${sanitizedContext.substring(0, 20000)}
       """
 
-      You must generate a valid JSON array of question objects. 
-      The JSON schema for a question object is:
-      {
-        "type": "mcq-single" | "mcq-multiple" | "true-false" | "fill-blanks" | "short-answer" | "long-answer" | "match-following",
-        "questionText": "string (the question stem)",
-        "marks": number (suggested marks),
-        "options": [ { "text": "string", "isCorrect": boolean } ] (ONLY for mcq-single/mcq-multiple),
-        "matchPairs": [ { "left": "string", "right": "string" } ] (ONLY for match-following),
-        "correctAnswer": "string" (for checking answer, internal use)
-      }
-
-      Requirements:
-      1. Generate exactly ${questionCount} questions.
-      2. Vary the question types suitable for the content (include MCQs, Short Answer, Long Answer).
-      3. Questions must be based ONLY on the provided context.
-      4. Use valid UTF-8 script characters for the target language (e.g., Devanagari for Hindi).
-      5. DO NOT use symbols or garbage characters. If a word or concept cannot be translated or read, skip it or use the original term in brackets.
-      6. Return ONLY the JSON array. Do not include markdown code blocks like \`\`\`json. Just the raw JSON.
+      INSTRUCTIONS:
+      1. Generate exactly ${questionCount} questions in ${language}.
+      2. If language is Hindi, use proper Devanagari script ONLY.
+      3. CRITICAL: Your source text has garbage symbols. I have tried to clean them, but some might remain.
+      4. DO NOT include any symbols like "@", "*", "+", "$", "#", ">" in your questions.
+      5. If a sentence in the context doesn't make sense, IGNORE it. Do not attempt to guess or echo symbols.
+      6. Return ONLY a raw JSON array. No markdown code blocks.
     `;
 
         const chatCompletion = await groq.chat.completions.create({
             messages: [
                 {
                     role: 'system',
-                    content: `You are a JSON-only response bot. You must return strictly a JSON array of questions.
-                    IMPORTANT: If the target language is ${language}, you MUST use the correct ${language} script characters (e.g., Devanagari for Hindi).
-                    NO OTHER TEXT.`,
+                    content: `You are a strict JSON-only AI. 
+                    NEVER output symbols like "@", "*", "$", "%" in generated questions. 
+                    If you see symbols in the context, they are ENCODING ERRORS. Ignore them completely.
+                    Return strictly a JSON array of questions.`,
                 },
                 {
                     role: 'user',
@@ -133,8 +163,7 @@ export async function POST(req: Request) {
                 },
             ],
             model: 'llama-3.3-70b-versatile',
-
-            temperature: 0.3,
+            temperature: 0.1, // Lower temperature for more consistency
             stream: false,
         });
 
@@ -149,13 +178,13 @@ export async function POST(req: Request) {
             questions = JSON.parse(cleanContent);
         } catch (e) {
             console.error('Failed to parse Groq response:', content);
-            return NextResponse.json({ error: 'Failed to generate valid JSON' }, { status: 500 });
+            return NextResponse.json({ error: 'Failed to generate valid JSON paper' }, { status: 500 });
         }
 
-        // Diagnostic info for the user to see if OCR/Extraction failed
-        const debugText = contextText.length > 500 ? contextText.substring(0, 500) + '...' : contextText;
+        // Diagnostic info for the user
+        const debugSample = sanitizedContext.length > 2000 ? sanitizedContext.substring(0, 2000) + '...' : sanitizedContext;
 
-        return NextResponse.json({ questions, debugExtractedText: debugText });
+        return NextResponse.json({ questions, debugExtractedText: debugSample });
     } catch (error: any) {
         const message = error.message || String(error);
         console.error('Final generating questions error:', message);
