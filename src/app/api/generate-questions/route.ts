@@ -32,9 +32,8 @@ export async function POST(req: Request) {
                 if (file.type === 'application/pdf') {
                     console.log('Attempting to parse PDF:', file.name);
                     try {
-                        const { PDFParse } = await import('pdf-parse');
-                        const parser = new PDFParse({ data: buffer });
-                        const pdfData = await parser.getText();
+                        const pdf = (await import('pdf-parse')).default;
+                        const pdfData = await pdf(buffer);
                         contextText += `\n\nContent from ${file.name}:\n${pdfData.text}`;
                     } catch (pdfErr: any) {
                         console.error('PDF parsing detail error:', pdfErr);
