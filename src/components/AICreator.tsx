@@ -23,13 +23,18 @@ import {
 } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
-  ArrowLeft,
-  ArrowRight,
-  Upload,
-  FileText,
   Sparkles,
-  AlertCircle,
+  Upload,
+  Settings,
+  FileText,
+  File,
+  Clock,
+  ArrowRight,
+  ArrowLeft,
+  X,
   Loader2,
+  Trash2,
+  AlertCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
@@ -43,6 +48,7 @@ export function AICreator() {
   const [step, setStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
   const [contextText, setContextText] = useState('');
+  const [extractedTextDebug, setExtractedTextDebug] = useState<string | null>(null);
   const [contextFiles, setContextFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -386,6 +392,25 @@ export function AICreator() {
                 )}
               </Button>
             </div>
+
+            {extractedTextDebug && (
+              <Card className="mt-8 border-amber-200 bg-amber-50/30">
+                <CardHeader className="py-3">
+                  <CardTitle className="text-sm font-medium flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4 text-amber-600" />
+                    Diagnostic: Extracted Text Sample
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    This is what the AI received from your PDF. If this looks like symbols, the PDF reader is failing.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <pre className="text-xs bg-white/50 p-3 rounded border border-amber-100 overflow-x-auto whitespace-pre-wrap max-h-40 overflow-y-auto font-mono">
+                    {extractedTextDebug}
+                  </pre>
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
       </main>

@@ -30,14 +30,30 @@ export async function POST(req: Request) {
             for (const file of files) {
                 const buffer = Buffer.from(await file.arrayBuffer());
                 if (file.type === 'application/pdf') {
-                    console.log('Attempting to parse PDF:', file.name);
+                    console.log('Attempting to parse PDF with pdf2json:', file.name);
                     try {
-                        const pdf = (await import('pdf-parse')).default;
-                        const pdfData = await pdf(buffer);
-                        contextText += `\n\nContent from ${file.name}:\n${pdfData.text}`;
+                        const PDFParser = (await import('pdf2json')).default;
+                        const pdfParser = new (PDFParser as any)(null, 1); // 1 = text only
+
+                        const pdfText = await new Promise<string>((resolve, reject) => {
+                            pdfParser.on("pdfParser_dataError", (errData: any) => reject(errData.parserError));
+                            pdfParser.on("pdfParser_dataReady", () => {
+                                resolve((pdfParser as any).getRawTextContent());
+                            });
+                            pdfParser.parseBuffer(buffer);
+                        });
+
+                        contextText += `\n\nContent from ${file.name}:\n${pdfText}`;
                     } catch (pdfErr: any) {
-                        console.error('PDF parsing detail error:', pdfErr);
-                        throw new Error(`PDF Parser error (${file.name}): ${pdfErr.message || String(pdfErr)}`);
+                        console.error('PDF parsing detail error (pdf2json):', pdfErr);
+                        // Fallback to pdf-parse if pdf2json fails
+                        try {
+                            const pdf = (await import('pdf-parse')).default;
+                            const pdfData = await pdf(buffer);
+                            contextText += `\n\nContent from ${file.name}:\n${pdfData.text}`;
+                        } catch (fallbackErr) {
+                            throw new Error(`PDF Parser error (${file.name}): ${pdfErr.message || String(pdfErr)}`);
+                        }
                     }
                 } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                     console.log('Attempting to parse DOCX:', file.name);
