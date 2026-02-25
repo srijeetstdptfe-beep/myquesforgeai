@@ -1,8 +1,5 @@
 import { Groq } from 'groq-sdk';
 import { NextResponse } from 'next/server';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const pdf = require('pdf-parse');
 import mammoth from 'mammoth';
 
 export async function POST(req: Request) {
@@ -32,7 +29,9 @@ export async function POST(req: Request) {
             for (const file of files) {
                 const buffer = Buffer.from(await file.arrayBuffer());
                 if (file.type === 'application/pdf') {
-                    const pdfData = await pdf(buffer);
+                    const { PDFParse } = await import('pdf-parse');
+                    const parser = new PDFParse({ data: buffer });
+                    const pdfData = await parser.getText();
                     contextText += `\n\nContent from ${file.name}:\n${pdfData.text}`;
                 } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                     const docxData = await mammoth.extractRawText({ buffer });
@@ -121,8 +120,9 @@ export async function POST(req: Request) {
         }
 
         return NextResponse.json({ questions });
-    } catch (error) {
-        console.error('Error generating questions:', error);
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.error('Error generating questions:', message);
+        return NextResponse.json({ error: 'Internal server error', detail: message }, { status: 500 });
     }
 }
