@@ -3,31 +3,31 @@
 import { jsPDF } from 'jspdf';
 import { Language } from './types';
 
-// Font URLs from Fontsource CDN (jsdelivr)
+// Font URLs from Fontsource CDN (jsDelivr)
 // These are the regular weight Noto Sans fonts for each script family
 const FONT_URLS: Record<string, string> = {
     // Devanagari (Hindi, Marathi, Sanskrit, Nepali, Konkani, Dogri, Maithili, Bodo, Kashmiri, Sindhi)
-    devanagari: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansDevanagari/NotoSansDevanagari-Regular.ttf',
+    devanagari: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansDevanagari/NotoSansDevanagari-Regular.ttf',
     // Tamil
-    tamil: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansTamil/NotoSansTamil-Regular.ttf',
+    tamil: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansTamil/NotoSansTamil-Regular.ttf',
     // Telugu  
-    telugu: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansTelugu/NotoSansTelugu-Regular.ttf',
+    telugu: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansTelugu/NotoSansTelugu-Regular.ttf',
     // Bengali (Bengali, Assamese, Manipuri)
-    bengali: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansBengali/NotoSansBengali-Regular.ttf',
+    bengali: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansBengali/NotoSansBengali-Regular.ttf',
     // Gujarati
-    gujarati: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansGujarati/NotoSansGujarati-Regular.ttf',
+    gujarati: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansGujarati/NotoSansGujarati-Regular.ttf',
     // Kannada
-    kannada: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansKannada/NotoSansKannada-Regular.ttf',
+    kannada: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansKannada/NotoSansKannada-Regular.ttf',
     // Malayalam
-    malayalam: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansMalayalam/NotoSansMalayalam-Regular.ttf',
+    malayalam: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansMalayalam/NotoSansMalayalam-Regular.ttf',
     // Odia
-    odia: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansOriya/NotoSansOriya-Regular.ttf',
+    odia: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansOriya/NotoSansOriya-Regular.ttf',
     // Punjabi (Gurmukhi)
-    punjabi: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansGurmukhi/NotoSansGurmukhi-Regular.ttf',
+    punjabi: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansGurmukhi/NotoSansGurmukhi-Regular.ttf',
     // Urdu/Sindhi (Arabic script)
-    arabic: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansArabic/NotoSansArabic-Regular.ttf',
+    arabic: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansArabic/NotoSansArabic-Regular.ttf',
     // Santali (Ol Chiki)
-    santali: 'https://raw.githubusercontent.com/googlefonts/noto-fonts/master/hinted/ttf/NotoSansOlChiki/NotoSansOlChiki-Regular.ttf',
+    santali: 'https://cdn.jsdelivr.net/gh/googlefonts/noto-fonts@master/hinted/ttf/NotoSansOlChiki/NotoSansOlChiki-Regular.ttf',
 };
 
 // Map languages to their script family
@@ -65,6 +65,9 @@ const fontCache: Record<string, string> = {};
  */
 async function fetchFontAsBase64(url: string): Promise<string> {
     const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Failed to fetch font: ${response.statusText} (${response.status})`);
+    }
     const blob = await response.blob();
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -107,9 +110,13 @@ export async function loadFontForLanguage(pdf: jsPDF, language: Language): Promi
             fontCache[script] = await fetchFontAsBase64(fontUrl);
         }
 
-        // Register font with jsPDF
+        // Register font with jsPDF for ALL styles to prevent fallback to non-unicode fonts
+        // jsPDF needs explicit registration for 'bold' etc. if setFont(name, 'bold') is called.
         pdf.addFileToVFS(`${fontName}.ttf`, fontCache[script]);
         pdf.addFont(`${fontName}.ttf`, fontName, 'normal', 'Identity-H');
+        pdf.addFont(`${fontName}.ttf`, fontName, 'bold', 'Identity-H');
+        pdf.addFont(`${fontName}.ttf`, fontName, 'italic', 'Identity-H');
+        pdf.addFont(`${fontName}.ttf`, fontName, 'bolditalic', 'Identity-H');
 
         return fontName;
     } catch (error) {

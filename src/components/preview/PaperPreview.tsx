@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { QuestionPaper, calculateSectionMarks } from '@/lib/types';
-import { loadFontForLanguage, getFontFamilyForLanguage, getGoogleFontsUrl } from '@/lib/fontLoader';
+import { getFontFamilyForLanguage } from '@/lib/fontLoader';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Download, FileText } from 'lucide-react';
 import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 interface PaperPreviewProps {
   paper: QuestionPaper;
@@ -25,274 +26,158 @@ export function PaperPreview({ paper, isOpen, onClose }: PaperPreviewProps) {
   const [isExporting, setIsExporting] = useState(false);
 
   const exportToPDF = async () => {
+    if (!previewRef.current) return;
     setIsExporting(true);
+
     try {
-      // Check Permissions via API - Simplified for DecapCMS migration
-      let canExportClean = true;
+      // Store coordinates calculated from the cloned document
+      const blockPositions: { top: number; bottom: number }[] = [];
+      // Use html2canvas for "Pixel-Perfect" export.
+      // This is the only way to reliably handle complex Hindi ligatures 
+      // which jsPDF struggles to shape correctly with standard fonts.
+      const canvas = await html2canvas(previewRef.current, {
+        scale: 2, // Higher scale for better print quality
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+        scrollX: 0,
+        scrollY: 0,
+        onclone: (clonedDoc) => {
+          // html2canvas fails on modern CSS color functions like oklch() or lab().
+          // Strategy: Inject a high-priority style block that resets ALL elements to standard colors.
+          const style = clonedDoc.createElement('style');
+          style.innerHTML = `
+            :root {
+              --background: #ffffff !important;
+              --foreground: #000000 !important;
+              --primary: #000000 !important;
+              --primary-foreground: #ffffff !important;
+              --secondary: #f3f4f6 !important;
+              --secondary-foreground: #000000 !important;
+              --muted: #f3f4f6 !important;
+              --muted-foreground: #6b7280 !important;
+              --accent: #f3f4f6 !important;
+              --accent-foreground: #000000 !important;
+              --border: #e5e7eb !important;
+              --input: #e5e7eb !important;
+              --ring: #9ca3af !important;
+            }
 
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight(); // Needed for watermark
-      const margin = 15;
-      const contentWidth = pageWidth - 2 * margin;
-      let yPos = margin;
-      const lineHeight = 6;
+            * {
+              color: #000000 !important;
+              border-color: #000000 !important;
+              box-shadow: none !important;
+            }
 
-      // ... font loading ...
-      const paperLanguage = paper.metadata.language || 'english';
-      const fontName = await loadFontForLanguage(pdf, paperLanguage);
+            body, html {
+              background-color: #ffffff !important;
+              color: #000000 !important;
+            }
+          `;
+          clonedDoc.head.appendChild(style);
 
-      // Apply Watermark if needed (at the end or during? Metadata usually added at end)
-      // We'll apply it at the end to cover all pages.
+          // Deep Sanitization: Iterate through all elements and strip inline styles using oklch/lab
+          const elements = clonedDoc.getElementsByTagName('*');
+          for (let i = 0; i < elements.length; i++) {
+            const el = elements[i] as HTMLElement;
+            if (el.style) {
+              const bg = el.style.backgroundColor;
+              const color = el.style.color;
+              const border = el.style.borderColor;
 
-      // --- Header Section ---
-      pdf.setFont(fontName, 'normal');
-
-      // Institution Name (Centered, Uppercase)
-      if (paper.metadata.institutionName) {
-        pdf.setFontSize(14);
-        pdf.text(paper.metadata.institutionName.toUpperCase(), pageWidth / 2, yPos, { align: 'center' });
-        yPos += lineHeight + 1;
-      }
-
-      // Exam Name (Centered, Uppercase)
-      if (paper.metadata.examName) {
-        pdf.setFontSize(12);
-        pdf.text(paper.metadata.examName.toUpperCase(), pageWidth / 2, yPos, { align: 'center' });
-        yPos += lineHeight;
-      }
-
-      // Subject (Centered, Uppercase)
-      if (paper.metadata.subject) {
-        pdf.setFontSize(11);
-        pdf.text(paper.metadata.subject.toUpperCase(), pageWidth / 2, yPos, { align: 'center' });
-        yPos += lineHeight;
-      }
-
-      // Meta Row: STD (Left) -- TIME (Center) -- Marks (Right)
-      yPos += 2;
-      pdf.setFontSize(11);
-      pdf.setFont(fontName, 'bold');
-
-      const stdText = paper.metadata.classOrCourse ? `STD: ${paper.metadata.classOrCourse}` : '';
-      const timeText = paper.metadata.duration ? `TIME: ${paper.metadata.duration}` : '';
-      const marksText = `Marks: ${paper.metadata.totalMarks}`;
-
-      // Left
-      if (stdText) pdf.text(stdText, margin, yPos);
-
-      // Center
-      if (timeText) pdf.text(timeText, pageWidth / 2, yPos, { align: 'center' });
-
-      // Right
-      pdf.text(marksText, pageWidth - margin, yPos, { align: 'right' });
-
-      yPos += lineHeight;
-
-      // Optional: Paper Code or "Activity Set 1" if treated as subset of exam name
-      if (paper.metadata.paperCode) {
-        pdf.text(paper.metadata.paperCode, pageWidth / 2, yPos, { align: 'center' });
-        yPos += lineHeight;
-      }
-
-      yPos += 2;
-
-      // Instructions
-      if (paper.metadata.instructions) {
-        // Only show if strictly needed, or maybe just "General Instructions" title if space is tight? 
-        // The sample image shows "Section I: Language Study" directly after header.
-        // Let's keep instructions but ensure they don't look out of place.
-        // For now, I'll render instructions if they exist, but maybe more compact?
-        // Actually, the sample image doesn't show general instructions block like before.
-        // I'll keep it but make it look integrated.
-      }
-
-      // --- content ---
-      let globalQuestionNumber = 0;
-
-      // Helper to check page break
-      const checkPageBreak = (neededSpace: number = 20) => {
-        if (yPos + neededSpace > 280) {
-          pdf.addPage();
-          yPos = margin;
-        }
-      };
-
-      paper.sections.forEach((section) => {
-        checkPageBreak();
-
-        // Section Title: Left aligned, in brackets, e.g. (Section I: Language Study)
-        pdf.setFont(fontName, 'bold');
-        pdf.setFontSize(12);
-        // Construct title text
-        let sectionTitle = section.title;
-        const sectionHeader = `(${sectionTitle})`;
-
-        // Align left (margin) instead of centered
-        pdf.text(sectionHeader, margin, yPos);
-        yPos += lineHeight;
-
-        if (section.instructions) {
-          pdf.setFontSize(10);
-          pdf.setFont(fontName, 'italic');
-          // Align left as well for consistency, or keep centered? User said "Section names", typically instructions follow title.
-          // Let's align left to match the section title request.
-          pdf.text(`(${section.instructions})`, margin, yPos);
-          yPos += lineHeight;
-        }
-
-        yPos += 2;
-
-        section.questions.forEach((q) => {
-          checkPageBreak();
-          globalQuestionNumber++;
-
-          pdf.setFont(fontName, 'bold'); // Question text usually bold in exam papers? Or just the Q number?
-          // Image shows: Q.1 A1. Do as directed ... [4 Marks]
-          // The structure is bit complex. Let's simplify: "Q{num}. {Text} .... [Marks]"
-
-          pdf.setFontSize(11);
-          const qPrefix = `Q.${globalQuestionNumber} `;
-          const marksSuffix = `[${q.marks} Marks]`;
-
-          const questionText = stripHtml(q.questionText).trim();
-
-          // We need to print Marks at the right edge.
-          // And Question text wrapping on the left.
-
-          const marksWidth = pdf.getTextWidth(marksSuffix);
-          const availableWidthForText = contentWidth - marksWidth - 5;
-
-          // Print Marks first (Right aligned)
-          pdf.setFont(fontName, 'bold');
-          pdf.text(marksSuffix, pageWidth - margin, yPos, { align: 'right' });
-
-          // Print Question Text
-          // Let's decide if main question text is bold or normal. 
-          // Sample: "Do as directed :(Any four)" is bold.
-          // Subquestions "i. Write two..." is bold.
-          // Let's stick to Bold for Main Question.
-
-          const lines = pdf.splitTextToSize(qPrefix + questionText, availableWidthForText);
-
-          // Check if lines need page break
-          if (yPos + (lines.length * lineHeight) > 280) {
-            pdf.addPage();
-            yPos = margin;
-            // Reprint marks if we moved? uncommon edge case.
-            pdf.text(marksSuffix, pageWidth - margin, yPos, { align: 'right' });
+              if (bg && (bg.includes('oklch') || bg.includes('lab'))) el.style.backgroundColor = 'transparent';
+              if (color && (color.includes('oklch') || color.includes('lab'))) el.style.color = '#000000';
+              if (border && (border.includes('oklch') || border.includes('lab'))) el.style.borderColor = '#000000';
+            }
           }
+          // 3. CAPTURE COORDINATES from the cloned layout for perfect slicing
+          const clonedRoot = clonedDoc.querySelector('[data-paper-root]') as HTMLElement;
+          if (clonedRoot) {
+            const clonedBlocks = Array.from(clonedRoot.querySelectorAll('.pdf-print-block')) as HTMLElement[];
+            const rootRect = clonedRoot.getBoundingClientRect();
 
-          lines.forEach((line: string) => {
-            pdf.text(line, margin, yPos);
-            yPos += lineHeight;
-          });
-
-          // Sub Questions / Options
-          pdf.setFont(fontName, 'normal');
-
-          // --- MCQs ---
-          if (q.type === 'mcq-single' || q.type === 'mcq-multiple') {
-            const optionLabels = ['i.', 'ii.', 'iii.', 'iv.'];
-            // Sample image uses i. ii. iii. for subquestions. 
-            // But for MCQs it usually uses A, B, C, D or (a) (b).
-            // Let's use (A), (B)..
-            const optLabels = ['(A)', '(B)', '(C)', '(D)'];
-            q.options?.forEach((opt, i) => {
-              const label = optLabels[i] || `(${i + 1})`;
-              const textToPrint = `    ${label} ${opt.text || ''}`;
-              const lines = pdf.splitTextToSize(textToPrint, contentWidth);
-
-              if (yPos + (lines.length * lineHeight) > 280) {
-                pdf.addPage();
-                yPos = margin;
-              }
-
-              lines.forEach((line: string) => {
-                pdf.text(line, margin, yPos);
-                yPos += lineHeight;
+            clonedBlocks.forEach(b => {
+              const rect = b.getBoundingClientRect();
+              blockPositions.push({
+                top: rect.top - rootRect.top,
+                bottom: rect.bottom - rootRect.top
               });
             });
           }
-
-          // --- Match Follow ---
-          if (q.type === 'match-following') {
-            // ... match logic similar to before but with Times font ...
-            const colA = q.matchPairs?.map((p, i) => `(${i + 1}) ${p.left}`) || [];
-            const colB = q.matchPairs?.map((p, i) => `(${String.fromCharCode(97 + i)}) ${p.right}`) || []; // a, b, c
-
-            const maxLen = Math.max(colA.length, colB.length);
-            yPos += 2;
-
-            // Headers
-            pdf.setFont(fontName, 'bold');
-            pdf.text("Column A", margin + 10, yPos);
-            // Adjust Column B position if needed, or keep at midpoint
-            pdf.text("Column B", pageWidth / 2 + 5, yPos);
-            yPos += lineHeight;
-            pdf.setFont(fontName, 'normal');
-
-            for (let i = 0; i < maxLen; i++) {
-              // We need to wrap text for both columns
-              // Width for each column is roughly (contentWidth / 2) - padding
-              const colWidth = (contentWidth / 2) - 10;
-
-              const leftText = colA[i] || '';
-              const rightText = colB[i] || '';
-
-              const leftLines = pdf.splitTextToSize(leftText, colWidth);
-              const rightLines = pdf.splitTextToSize(rightText, colWidth);
-
-              const maxLines = Math.max(leftLines.length, rightLines.length);
-
-              if (yPos + (maxLines * lineHeight) > 280) {
-                pdf.addPage();
-                yPos = margin;
-                // Reprint headers? Maybe not necessary inside the table usually.
-              }
-
-              // Print lines
-              for (let j = 0; j < maxLines; j++) {
-                if (leftLines[j]) pdf.text(leftLines[j], margin + 10, yPos);
-                if (rightLines[j]) pdf.text(rightLines[j], pageWidth / 2 + 5, yPos);
-                yPos += lineHeight;
-              }
-              // Extra spacing between rows?
-              yPos += 2;
-            }
-          }
-
-          yPos += 2;
-        });
-
-        yPos += 4;
+        }
       });
 
+      const root = previewRef.current!;
       const fileName = `${paper.metadata.examName || 'Question_Paper'}.pdf`;
+      const pdf = new jsPDF('p', 'mm', 'a4');
 
-      // Apply Watermark
-      if (!canExportClean) {
-        const totalPages = pdf.getNumberOfPages();
-        for (let i = 1; i <= totalPages; i++) {
-          pdf.setPage(i);
-          pdf.setTextColor(200, 200, 200);
-          pdf.setFontSize(40);
-          // Rotate text 45 degrees
-          pdf.text("TRIAL VERSION", pageWidth / 2, pageHeight / 2, {
-            align: 'center',
-            angle: 45
+      const pageWidthMM = 210;
+      const pageHeightMM = 297;
+
+      const mmToPx = root.offsetWidth / pageWidthMM;
+      const pxToMm = pageWidthMM / root.offsetWidth;
+      const pageHeightPx = pageHeightMM * mmToPx;
+
+      const canvasWidthPx = canvas.width / 2;
+      const canvasHeightPx = canvas.height / 2;
+
+      let yOffsetPx = 0;
+      let pageNumber = 1;
+
+      while (yOffsetPx < canvasHeightPx) {
+        if (pageNumber > 1) pdf.addPage();
+
+        let endY = yOffsetPx + pageHeightPx;
+
+        if (endY < canvasHeightPx) {
+          // Use our PRE-CALCULATED coordinates from the clone pass
+          // Find the block that is currently being cut
+          const overlappingBlock = blockPositions.find(b => {
+            return b.top < endY && b.bottom > endY;
           });
-          pdf.text("UPGRADE TO REMOVE", pageWidth / 2, (pageHeight / 2) + 20, {
-            align: 'center',
-            angle: 45
-          });
+
+          if (overlappingBlock) {
+            // Slice exactly at the start of the unit that was being cut
+            endY = overlappingBlock.top - 2; // tiny safety gap
+          }
         }
+
+        // Clamp to end of content
+        if (endY > canvasHeightPx) endY = canvasHeightPx;
+        if (endY <= yOffsetPx) {
+          // Safety: if a single block is taller than a whole page, we must split it anyway
+          endY = yOffsetPx + pageHeightPx;
+        }
+
+        const sliceHeightPx = endY - yOffsetPx;
+        const sliceHeightMM = sliceHeightPx * pxToMm;
+
+        // Source canvas is scale 2
+        const sX = 0;
+        const sY = Math.floor(yOffsetPx * 2);
+        const sWidth = canvas.width;
+        const sHeight = Math.floor(sliceHeightPx * 2);
+
+        // Create a temporary canvas for this specific slice
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = sWidth;
+        tempCanvas.height = sHeight;
+        const ctx = tempCanvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(canvas, sX, sY, sWidth, sHeight, 0, 0, sWidth, sHeight);
+          const pageData = tempCanvas.toDataURL('image/jpeg', 1.0);
+          pdf.addImage(pageData, 'JPEG', 0, 0, pageWidthMM, sliceHeightMM, undefined, 'FAST');
+        }
+
+        yOffsetPx = endY;
+        pageNumber++;
       }
 
-      pdf.save(fileName.replace(/\\s+/g, '_'));
+      pdf.save(fileName.replace(/\s+/g, '_'));
+
     } catch (error) {
       console.error('Error exporting PDF:', error);
-      alert('Failed to export PDF. Please try again.');
+      alert('Failed to export PDF: ' + (error instanceof Error ? error.message : 'Unknown error'));
     } finally {
       setIsExporting(false);
     }
@@ -334,68 +219,72 @@ export function PaperPreview({ paper, isOpen, onClose }: PaperPreviewProps) {
         <div className="flex-1 overflow-auto p-4 md:p-8 bg-gray-200/50">
           <div
             ref={previewRef}
-            className="bg-white text-black p-[20mm] shadow-2xl break-words mx-auto"
+            data-paper-root
+            className="bg-white text-black p-[20mm] shadow-2xl break-words mx-auto relative"
             style={{
               width: '210mm',
               minHeight: '297mm',
               fontFamily: getFontFamilyForLanguage(paper.metadata.language || 'english'),
               wordWrap: 'break-word',
-              overflowWrap: 'break-word'
+              overflowWrap: 'break-word',
+              position: 'relative'
             }}
           >
             {/* --- Header Section --- */}
-            <div className="flex flex-col items-center mb-6">
-              {/* Institution Name */}
-              {paper.metadata.institutionName && (
-                <h1 className="text-xl font-bold uppercase text-center tracking-wide mb-1">
-                  {paper.metadata.institutionName}
-                </h1>
-              )}
-              {/* Exam Name */}
-              {paper.metadata.examName && (
-                <h2 className="text-lg font-bold uppercase text-center mb-1">
-                  {paper.metadata.examName}
-                </h2>
-              )}
-              {/* Subject */}
-              {paper.metadata.subject && (
-                <h3 className="text-base font-bold uppercase text-center mb-4">
-                  {paper.metadata.subject}
-                </h3>
-              )}
+            <div className="pdf-print-block">
+              <div className="flex flex-col items-center mb-6">
+                {/* Institution Name */}
+                {paper.metadata.institutionName && (
+                  <h1 className="text-xl font-bold uppercase text-center tracking-wide mb-1">
+                    {paper.metadata.institutionName}
+                  </h1>
+                )}
+                {/* Exam Name */}
+                {paper.metadata.examName && (
+                  <h2 className="text-lg font-bold uppercase text-center mb-1">
+                    {paper.metadata.examName}
+                  </h2>
+                )}
+                {/* Subject */}
+                {paper.metadata.subject && (
+                  <h3 className="text-base font-bold uppercase text-center mb-4">
+                    {paper.metadata.subject}
+                  </h3>
+                )}
 
-              {/* Meta Row: STD - TIME - MARKS */}
-              <div className="w-full flex justify-between items-center text-sm font-bold border-b-2 border-transparent pb-2 mb-2">
-                <span className="flex-1 text-left">
-                  {paper.metadata.classOrCourse ? `STD: ${paper.metadata.classOrCourse}` : ''}
-                </span>
-                <span className="flex-1 text-center">
-                  {paper.metadata.duration ? `TIME: ${paper.metadata.duration}` : ''}
-                </span>
-                <span className="flex-1 text-right">
-                  Marks: {paper.metadata.totalMarks}
-                </span>
+                {/* Meta Row: STD - TIME - MARKS */}
+                <div className="w-full flex justify-between items-center text-sm font-bold border-b-2 border-transparent pb-2 mb-2">
+                  <span className="flex-1 text-left">
+                    {paper.metadata.classOrCourse ? `STD: ${paper.metadata.classOrCourse}` : ''}
+                  </span>
+                  <span className="flex-1 text-center">
+                    {paper.metadata.duration ? `TIME: ${paper.metadata.duration}` : ''}
+                  </span>
+                  <span className="flex-1 text-right">
+                    Marks: {paper.metadata.totalMarks}
+                  </span>
+                </div>
               </div>
             </div>
 
             {/* --- Sections --- */}
-            <div className="space-y-6">
+            <div className="space-y-12">
               {paper.sections.map((section) => (
                 <div key={section.id}>
                   {/* Section Header */}
-                  <div className="text-left mb-4">
+                  <div className="text-left mb-4 pdf-print-block">
                     <h4 className="font-bold text-base">({section.title})</h4>
                     {section.instructions && (
-                      <p className="italic text-sm mt-1">({section.instructions})</p>
+                      <p className="italic text-sm mt-2">({section.instructions})</p>
                     )}
                   </div>
 
                   {/* Questions */}
-                  <div className="space-y-4">
+                  <div className="space-y-8">
                     {section.questions.map((q) => {
                       globalQuestionNumber++;
                       return (
-                        <div key={q.id} className="relative">
+                        <div key={q.id} className="relative pdf-print-block">
                           <div className="flex justify-between items-start gap-4">
                             {/* Question Text */}
                             <div className="flex-1 font-bold text-base leading-snug">
@@ -409,7 +298,7 @@ export function PaperPreview({ paper, isOpen, onClose }: PaperPreviewProps) {
                           </div>
 
                           {/* Render Options/Contents based on type */}
-                          <div className="ml-8 mt-2 space-y-2 text-base font-normal">
+                          <div className="ml-8 mt-3 space-y-3 text-base font-normal">
                             {/* MCQs */}
                             {(q.type === 'mcq-single' || q.type === 'mcq-multiple') && q.options && (
                               <div className="grid grid-cols-1 gap-y-2">
