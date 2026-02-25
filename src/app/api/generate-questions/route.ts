@@ -1,6 +1,7 @@
 import { Groq } from 'groq-sdk';
 import { NextResponse } from 'next/server';
-import mammoth from 'mammoth';
+
+export const runtime = 'nodejs';
 
 export async function POST(req: Request) {
     const groq = new Groq({
@@ -34,6 +35,7 @@ export async function POST(req: Request) {
                     const pdfData = await parser.getText();
                     contextText += `\n\nContent from ${file.name}:\n${pdfData.text}`;
                 } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                    const mammoth = (await import('mammoth')).default;
                     const docxData = await mammoth.extractRawText({ buffer });
                     contextText += `\n\nContent from ${file.name}:\n${docxData.value}`;
                 } else if (file.type === 'text/plain') {
