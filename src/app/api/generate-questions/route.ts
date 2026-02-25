@@ -30,14 +30,26 @@ export async function POST(req: Request) {
             for (const file of files) {
                 const buffer = Buffer.from(await file.arrayBuffer());
                 if (file.type === 'application/pdf') {
-                    const { PDFParse } = await import('pdf-parse');
-                    const parser = new PDFParse({ data: buffer });
-                    const pdfData = await parser.getText();
-                    contextText += `\n\nContent from ${file.name}:\n${pdfData.text}`;
+                    console.log('Attempting to parse PDF:', file.name);
+                    try {
+                        const { PDFParse } = await import('pdf-parse');
+                        const parser = new PDFParse({ data: buffer });
+                        const pdfData = await parser.getText();
+                        contextText += `\n\nContent from ${file.name}:\n${pdfData.text}`;
+                    } catch (pdfErr: any) {
+                        console.error('PDF parsing detail error:', pdfErr);
+                        throw new Error(`PDF Parser error (${file.name}): ${pdfErr.message || String(pdfErr)}`);
+                    }
                 } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                    const mammoth = (await import('mammoth')).default;
-                    const docxData = await mammoth.extractRawText({ buffer });
-                    contextText += `\n\nContent from ${file.name}:\n${docxData.value}`;
+                    console.log('Attempting to parse DOCX:', file.name);
+                    try {
+                        const mammoth = (await import('mammoth')).default;
+                        const docxData = await mammoth.extractRawText({ buffer });
+                        contextText += `\n\nContent from ${file.name}:\n${docxData.value}`;
+                    } catch (docxErr: any) {
+                        console.error('DOCX parsing detail error:', docxErr);
+                        throw new Error(`DOCX Parser error (${file.name}): ${docxErr.message || String(docxErr)}`);
+                    }
                 } else if (file.type === 'text/plain') {
                     contextText += `\n\nContent from ${file.name}:\n${buffer.toString('utf-8')}`;
                 }
@@ -122,9 +134,9 @@ export async function POST(req: Request) {
         }
 
         return NextResponse.json({ questions });
-    } catch (error: unknown) {
-        const message = error instanceof Error ? error.message : String(error);
-        console.error('Error generating questions:', message);
-        return NextResponse.json({ error: 'Internal server error', detail: message }, { status: 500 });
+    } catch (error: any) {
+        const message = error.message || String(error);
+        console.error('Final generating questions error:', message);
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }
